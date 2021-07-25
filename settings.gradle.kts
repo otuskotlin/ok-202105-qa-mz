@@ -6,3 +6,4 @@
  */
 
 rootProject.name = "questions_and_answers"
+include("common")
