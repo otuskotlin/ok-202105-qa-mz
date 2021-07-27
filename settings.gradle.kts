@@ -5,5 +5,14 @@
  * in the user manual at https://docs.gradle.org/7.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = "questions_and_answers"
+rootProject.name = "survey-service"
+
+pluginManagement {
+    plugins {
+        val kotlinVersion: String by settings
+        kotlin("jvm") version kotlinVersion
+        kotlin("multiplatform") version kotlinVersion
+    }
+}
+
 include("common")

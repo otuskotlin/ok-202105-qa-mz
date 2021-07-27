@@ -4,5 +4,20 @@
  * This is a general purpose Gradle build.
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/7.1/samples
  */
-group = "org.example"
-version = "1.0"
+plugins {
+    kotlin("jvm") apply false
+    kotlin("multiplatform") apply false
+}
+
+group = "ru.otus.otuskotlin.survey"
+version = "0.0.1"
+
+subprojects {
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories {
+        mavenCentral()
+    }
+}
+
