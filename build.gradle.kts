@@ -9,7 +9,7 @@ plugins {
     kotlin("multiplatform") apply false
 }
 
-group = "ru.otus.otuskotlin.survey"
+group = "ru.otus.kotlin.opinion"
 version = "0.0.1"
 
 subprojects {
@@ -20,4 +20,3 @@ subprojects {
         mavenCentral()
     }
 }
-
