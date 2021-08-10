@@ -12,7 +12,7 @@ tags:
     description: Manage answers
 paths:
   /question:
-    get:
+    post:
       tags:
         - question
       summary: Request list of questions.
