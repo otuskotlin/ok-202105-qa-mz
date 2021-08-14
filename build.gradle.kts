@@ -9,7 +9,7 @@ plugins {
     kotlin("multiplatform") apply false
 }
 
-group = "ru.otus.kotlin.opinion"
+group = "ru.otus.opinion"
 version = "0.0.1"
 
 subprojects {

@@ -1,0 +1,98 @@
+openapi: 3.0.1
+info:
+  title: Opinion service
+  description: Client API
+  version: 1.0.0
+servers:
+  - url: 'https://localhost/'
+tags:
+  - name: question
+    description: Manage questions
+  - name: answer
+    description: Manage answers
+paths:
+  /question/list:
+    post:
+      tags:
+        - question
+      summary: Request list of questions.
+      operationId: questionsList
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionsListRequest'
+        required: true
+      responses:
+        200:
+          description: List of questions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsListResponse'
+
+components:
+  schemas:
+
+    BaseMessage:
+      type: object
+      description: Parent of all transport models - requests and responses.
+      properties:
+        requestType:
+          type: string
+          title: Discriminator
+          description: Field used to deserialize requests.
+      discriminator:
+        propertyName: requestType
+
+    BaseRequest:
+      type: object
+      description: Base request object.
+      properties:
+        requestId:
+          type: string
+          description: Unique id of the request.
+        debug:
+          $ref: '#/components/schemas/Debug'
+
+    PaginationRequest:
+      type: object
+      description: Specify range of requested objects
+      properties:
+        size:
+          type: integer
+          description: Count of requested objects
+          format: int32
+        lastId:
+          type: string
+          description: Id of the last object which was requested earlier
+
+    Debug:
+      type: object
+      properties:
+        mode:
+          type: string
+          default: prod
+          enum: [prod, test, stub]
+        stub:
+          type: string
+
+    QuestionsListRequest:
+      description: Request list of questions.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            pagination:
+              $ref: "#/components/schemas/PaginationRequest"
+            debug:
+              type: object
+              properties:
+                stub:
+                  type: string
+                  enum: [success, nameEmpty, dbError]
+
+    QuestionsListResponse:
+      description: List of questions with additional information.
