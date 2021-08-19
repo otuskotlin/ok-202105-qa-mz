@@ -7,7 +7,7 @@ servers:
   - url: 'https://localhost/'
 tags:
   - name: question
-    description: Manage questions
+    description: Operations with questions.
   - name: answer
     description: Manage answers
 paths:
@@ -24,75 +24,174 @@ paths:
               $ref: '#/components/schemas/QuestionsListRequest'
         required: true
       responses:
-        200:
-          description: List of questions.
+        '200':
+          description: OK. Body contains list of questions.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuestionsListResponse'
 
+  /question/create:
+    post:
+      tags:
+        - question
+      summary: Create new question.
+      operationId: createQuestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionRequest'
+        required: true
+      responses:
+        '200':
+          description: Information about result of processing create question request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateQuestionResponse'
+
 components:
   schemas:
 
-    BaseMessage:
+    Discriminable:
       type: object
-      description: Parent of all transport models - requests and responses.
+      description: Provides way to deserealize subclasses.
       properties:
-        requestType:
+        discriminator:
           type: string
           title: Discriminator
-          description: Field used to deserialize requests.
+          description: |
+            Implement to be able correctly deserialize an object
+            from json or another format.
       discriminator:
-        propertyName: requestType
+        propertyName: discriminator
 
     BaseRequest:
+      description: Base request class.
       type: object
-      description: Base request object.
+      properties:
+        requestId:
+          description: Unique id of the request.
+          type: string
+        processingMode:
+          $ref: '#/components/schemas/RequestProcessingMode'
+
+    BaseResponse:
+      description: Base response class.
+      type: object
       properties:
         requestId:
           type: string
-          description: Unique id of the request.
-        debug:
-          $ref: '#/components/schemas/Debug'
-
-    PaginationRequest:
-      type: object
-      description: Specify range of requested objects
-      properties:
-        size:
-          type: integer
-          description: Count of requested objects
-          format: int32
-        lastId:
+        result:
           type: string
-          description: Id of the last object which was requested earlier
+          enum:
+            - success
+            - error
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestError'
 
-    Debug:
+    RequestError:
+      type: object
+      description: Error description.
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+
+    RequestProcessingMode:
       type: object
       properties:
         mode:
+          description: Specify how the request should be processed.
           type: string
           default: prod
           enum: [prod, test, stub]
         stub:
+          type: string
+          enum: [success, error]
+
+    Pagination:
+      description: Specify range of objects.
+      type: object
+      properties:
+        size:
+          description: Count of objects.
+          type: integer
+          format: int32
+        lastId:
+          description: Lower id of objects (excluded).
           type: string
 
     QuestionsListRequest:
       description: Request list of questions.
       type: object
       allOf:
-        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/Discriminable'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
             pagination:
-              $ref: "#/components/schemas/PaginationRequest"
-            debug:
-              type: object
-              properties:
-                stub:
-                  type: string
-                  enum: [success, nameEmpty, dbError]
+              $ref: "#/components/schemas/Pagination"
 
     QuestionsListResponse:
       description: List of questions with additional information.
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Discriminable"
+        - $ref: "#/components/schemas/BaseResponse"
+
+    CreateQuestionRequest:
+      description: Request new question creation.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Discriminable'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/Question'
+
+    CreateQuestionResponse:
+      description: Response to new question creation.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Discriminable'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/Question'
+
+    Question:
+      description: Mutable question.
+      type: object
+      properties:
+        questionId:
+          type: string
+          description: Unique question identifier.
+        title:
+          type: string
+          title: Question header.
+          description: Short description of the question.
+        author:
+          type: string
+          description: Question author.
+        creationTime:
+          type: string
+          description: Time the question was created.
+        language:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        likesCount:
+          type: integer
+        answersCount:
+          type: integer
+
+
