@@ -12,7 +12,7 @@ import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 fun RequestContext.toResponse() = when(contextType) {
     LIST -> toListQuestionsResponse()
     CREATE -> toCreateQuestionResponse()
-    NONE -> toEmptyResponse("Request was not processed.")
+    NONE -> toEmptyResponse()
 }
 
 fun RequestContext.toListQuestionsResponse() = QuestionsResponse(
@@ -29,10 +29,12 @@ fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
     question = responseQuestion.toTransport()
 )
 
-fun RequestContext.toEmptyResponse(s: String) = EmptyResponse(
+fun RequestContext.toEmptyResponse() = EmptyResponse(
     requestId = requestId,
     result = Result.ERROR,
-    processingInfos = processingMessages.map(ProcessingMessage::toTransport)
+    processingInfos = processingMessages
+        .map(ProcessingMessage::toTransport)
+        .plus(RequestProcessingMessage("Request was not processed."))
 )
 
 private fun Question.toTransport() = QuestionTransport(
@@ -50,11 +52,25 @@ private fun Question.toTransport() = QuestionTransport(
     visibility = visibility.toTransport()
 )
 
-private fun Permission.toTransport() = PermissionTransport.valueOf(name)
+private fun Permission.toTransport() = when(this) {
+    Permission.READ -> PermissionTransport.READ
+    Permission.UPDATE -> PermissionTransport.UPDATE
+    Permission.DELETE -> PermissionTransport.DELETE
+}
 
-private fun QuestionState.toTransport() = QuestionStateTransport.valueOf(name)
+private fun QuestionState.toTransport() = when(this) {
+    QuestionState.PROPOSED -> QuestionStateTransport.PROPOSED
+    QuestionState.MODERATED -> QuestionStateTransport.MODERATED
+    QuestionState.ACCEPTED -> QuestionStateTransport.ACCEPTED
+    QuestionState.OPENED -> QuestionStateTransport.OPENED
+    QuestionState.CLOSED -> QuestionStateTransport.CLOSED
+}
 
-private fun QuestionVisibility.toTransport() = Visibility.valueOf(name)
+private fun QuestionVisibility.toTransport() = when(this) {
+    QuestionVisibility.OWNER_ONLY -> Visibility.OWNER_ONLY
+    QuestionVisibility.REGISTERED_ONLY -> Visibility.REGISTERED_ONLY
+    QuestionVisibility.PUBLIC -> Visibility.PUBLIC
+}
 
 private fun ProcessingMessage.toTransport() = RequestProcessingMessage(message)
 

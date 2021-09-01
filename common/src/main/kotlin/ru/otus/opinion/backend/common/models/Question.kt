@@ -13,7 +13,7 @@ data class Question (
     var likesCount: Int = 0,
     var answersCount: Int = 0,
     var permissions: Set<Permission> = mutableSetOf(),
-    var state: QuestionState = QuestionState.PROPOSED,
-    var visibility: QuestionVisibility = QuestionVisibility.OWNER_ONLY
+    var state: QuestionState = QuestionState.default,
+    var visibility: QuestionVisibility = QuestionVisibility.default
 )
 

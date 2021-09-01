@@ -24,6 +24,4 @@ class SerializationTest {
         assertEquals(pagination?.objectId, deserializedPagination?.objectId)
         assertEquals(pagination?.relation, deserializedPagination?.relation)
     }
-
-
 }

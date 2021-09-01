@@ -10,6 +10,7 @@ import java.time.ZonedDateTime
 import ru.otus.opinion.openapi.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.models.Pagination as PaginationTransport
 import ru.otus.opinion.openapi.models.Pagination.Relation as PaginationRelation
+import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 
 fun RequestContext.setQuery(query: CreateQuestionRequest) = apply {
     this.contextType = RequestContext.RequestType.CREATE
@@ -24,12 +25,6 @@ fun RequestContext.setQuery(query: QuestionsRequest) = apply {
 }
 
 private fun QuestionTransport.toModel() : Question {
-    val transportState = state;
-    val modelState : QuestionState =
-        if (transportState == null) QuestionState.PROPOSED else QuestionState.valueOf(transportState.name)
-    val transportVisibility: Visibility? = visibility
-    val modelVisibility : QuestionVisibility =
-        if (transportVisibility == null) QuestionVisibility.OWNER_ONLY else QuestionVisibility.valueOf(transportVisibility.name)
     return Question (
         questionId = questionId ?: "",
         title = title ?: "",
@@ -41,8 +36,8 @@ private fun QuestionTransport.toModel() : Question {
         likesCount = 0,
         answersCount = 0,
         permissions = mutableSetOf(),
-        state = modelState,
-        visibility = modelVisibility
+        state = toModel(state),
+        visibility = toModel(visibility)
     )
 }
 
@@ -53,3 +48,20 @@ private fun PaginationTransport.toModel() = Pagination (
 )
 
 private fun PaginationRelation.toModel() = Relation.valueOf(value.uppercase())
+
+private fun toModel(state : QuestionStateTransport?) : QuestionState = when(state) {
+    QuestionStateTransport.PROPOSED -> QuestionState.PROPOSED
+    QuestionStateTransport.MODERATED -> QuestionState.MODERATED
+    QuestionStateTransport.ACCEPTED -> QuestionState.ACCEPTED
+    QuestionStateTransport.OPENED -> QuestionState.OPENED
+    QuestionStateTransport.CLOSED -> QuestionState.CLOSED
+    null -> QuestionState.default
+}
+
+private fun toModel(visibility : Visibility?) : QuestionVisibility = when(visibility) {
+    Visibility.OWNER_ONLY -> QuestionVisibility.OWNER_ONLY
+    Visibility.REGISTERED_ONLY -> QuestionVisibility.REGISTERED_ONLY
+    Visibility.PUBLIC -> QuestionVisibility.PUBLIC
+    null -> QuestionVisibility.default
+}
+    
