@@ -1,9 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.Test
-import ru.otus.opinion.openapi.models.Discriminable
-import ru.otus.opinion.openapi.models.Pagination
-import ru.otus.opinion.openapi.models.QuestionsListRequest
-import ru.otus.opinion.openapi.models.RequestProcessingMode
+import ru.otus.opinion.openapi.models.*
 import kotlin.test.assertEquals
 
 class SerializationTest {
@@ -11,15 +8,22 @@ class SerializationTest {
 
     @Test
     fun serializationTest() {
-        val request = QuestionsListRequest(
+        val request = QuestionsRequest(
             requestId = "1",
-            processingMode = RequestProcessingMode(mode = RequestProcessingMode.Mode.PROD, stub = null),
-            pagination = Pagination(size = 10, lastId = "0")
+            processingMode = ProcessingMode.PROD,
+            pagination = Pagination(objectsCount = 10, objectId = "1", relation = Pagination.Relation.AFTER)
         )
         val jsonString = mapper.writeValueAsString(request)
         println(jsonString)
-        val deserialized = mapper.readValue(jsonString, Discriminable::class.java) as QuestionsListRequest
+        val deserialized = mapper.readValue(jsonString, Discriminable::class.java) as QuestionsRequest
         assertEquals(request.requestId, deserialized.requestId)
+        assertEquals(request.processingMode, deserialized.processingMode)
+        val pagination = request.pagination
+        val deserializedPagination = deserialized.pagination
+        assertEquals(pagination?.objectsCount, deserializedPagination?.objectsCount)
+        assertEquals(pagination?.objectId, deserializedPagination?.objectId)
+        assertEquals(pagination?.relation, deserializedPagination?.relation)
     }
+
 
 }

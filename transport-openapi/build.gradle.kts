@@ -1,3 +1,4 @@
+
 plugins {
     kotlin("jvm")
     id("org.openapi.generator")
@@ -12,6 +13,7 @@ openApiGenerate {
     val openapiGroup = "${rootProject.group}.openapi"
 
     generatorName.set("kotlin")
+    generateApiDocumentation.set(true)
 //    outputDir.set("$rootDir")
     inputSpec.set("$rootDir/specs/backend-api.yaml")
 

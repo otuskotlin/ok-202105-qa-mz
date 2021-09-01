@@ -20,3 +20,5 @@ pluginManagement {
 
 include("common")
 include("transport-openapi")
+include("transport-mapping")
+include("transport-stubs")
