@@ -31,7 +31,7 @@ private fun QuestionTransport.toModel() : Question {
         content = content ?: "",
         author = author ?: "",
         creationTime = if (creationTime == null) Instant.now() else ZonedDateTime.parse(creationTime).toInstant(),
-        language = language ?: "",
+        language = language?.let { Language(it) } ?: Language.UNDEFINED,
         tags = tags ?: mutableListOf(),
         likesCount = 0,
         answersCount = 0,

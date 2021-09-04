@@ -8,7 +8,7 @@ data class Question (
     var content: String = "",
     var author: String = "",
     var creationTime: Instant = Instant.now(),
-    var language: String = "",
+    var language: Language = Language.UNDEFINED,
     var tags: List<String> = mutableListOf(),
     var likesCount: Int = 0,
     var answersCount: Int = 0,

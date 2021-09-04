@@ -43,7 +43,7 @@ class MappingTest {
         assertEquals(question?.title, questionModel.title)
         assertEquals(question?.content, questionModel.content)
         assertEquals(question?.author, questionModel.author)
-        assertEquals(question?.language, questionModel.language)
+        assertEquals(question?.language, questionModel.language.id)
         assertEquals(QuestionState.MODERATED, questionModel.state)
         assertEquals(QuestionVisibility.PUBLIC, questionModel.visibility)
 
@@ -62,7 +62,7 @@ class MappingTest {
                 content = "What do you get if you multiply six by nine?",
                 author = "James Casingworthy",
                 creationTime = Instant.parse("2021-08-07T13:04:01Z"),
-                language = "eng",
+                language = Language("eng"),
                 tags = listOf("philosophy"),
                 likesCount = 111,
                 answersCount = 1,
