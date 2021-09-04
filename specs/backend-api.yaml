@@ -1,0 +1,256 @@
+openapi: 3.0.1
+info:
+  title: Opinion service
+  description: Client API
+  version: 1.0.0
+servers:
+  - url: 'https://localhost/'
+tags:
+  - name: question
+    description: Operations with questions.
+  - name: answer
+    description: Manage answers
+paths:
+  /question/list:
+    post:
+      tags:
+        - question
+      summary: Request list of questions.
+      operationId: questionsList
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK. Body contains list of questions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+
+  /question/create:
+    post:
+      tags:
+        - question
+      summary: Create new question.
+      operationId: createQuestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionRequest'
+        required: true
+      responses:
+        '200':
+          description: Information about result of processing create question request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateQuestionResponse'
+
+components:
+  schemas:
+
+    Discriminable:
+      type: object
+      description: |
+        Support serialization of implementations.
+      properties:
+        className:
+          type: string
+          title: Discriminator
+          description: |
+            Used by json serializers to specify implementation class.
+      discriminator:
+        propertyName: className
+
+    Request:
+      type: object
+      description: Common interface for all requests.
+      allOf:
+        - $ref: "#/components/schemas/Discriminable"
+        - type: object
+          properties:
+            requestId:
+              description: Unique id of the request.
+              type: string
+            processingMode:
+              $ref: '#/components/schemas/ProcessingMode'
+      discriminator:
+        propertyName: className
+
+    Response:
+      type: object
+      description: Common interface for all responses.
+      allOf:
+        - $ref: "#/components/schemas/Discriminable"
+        - type: object
+          properties:
+            requestId:
+              description: Id of initial request.
+              type: string
+            result:
+              $ref: "#/components/schemas/Result"
+            processingInfos:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestProcessingMessage'
+      discriminator:
+        propertyName: className
+
+    EmptyResponse:
+      type: object
+      description: |
+        Universal empty response used in case specific response
+        faild to be generated.
+      allOf:
+        - $ref: "#/components/schemas/Response"
+
+    RequestProcessingMessage:
+      type: object
+      description: |
+        Any message which can be useful for a client, e.g. form field validation error,
+        some remark or hint for client.
+      properties:
+        message:
+          type: string
+
+    ProcessingMode:
+      description: Specify how the request should be processed.
+      type: string
+      default: prod
+      enum: [prod, test, stub]
+
+    Pagination:
+      description: |
+        Specify range of objects.
+        Set an object id and specify how many objects before/after specified
+        object are required.
+      type: object
+      properties:
+        objectsCount:
+          description: Count of objects.
+          type: integer
+          format: int32
+        objectId:
+          description: Object id used as a boundary of the range.
+          type: string
+        relation:
+          description: |
+            Specify should objects with smaller or greaterids ids,
+            should be selected.
+          type: string
+          enum: [before, after]
+
+    QuestionsRequest:
+      description: Request list of questions.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Request'
+        - type: object
+          properties:
+            pagination:
+              $ref: "#/components/schemas/Pagination"
+
+    QuestionsResponse:
+      description: List of questions with additional information.
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Response"
+        - type: object
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: "#/components/schemas/Question"
+
+    CreateQuestionRequest:
+      description: Request new question creation.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Request'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/Question'
+
+    CreateQuestionResponse:
+      description: Response to new question creation.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/Question'
+
+    Question:
+      description: Mutable question.
+      type: object
+      properties:
+        questionId:
+          description: Unique question identifier.
+          type: string
+        title:
+          description: Short description of the question.
+          type: string
+          title: Question header.
+        content:
+          description: The full question tetx.
+          type: string
+        author:
+          description: Question author.
+          type: string
+        creationTime:
+          description: Time the question was created.
+          type: string
+        language:
+          type: string
+        tags:
+          description: Tags used to classify and search questions, similar with StackOverflow tags.
+          type: array
+          items:
+            type: string
+        likesCount:
+          type: integer
+        answersCount:
+          type: integer
+        permissions:
+          description: Inform client what it can do with the question.
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/Permission"
+        state:
+          $ref: "#/components/schemas/QuestionState"
+        visibility:
+          $ref: "#/components/schemas/Visibility"
+
+
+    Permission:
+      description: Which operations are granted to client.
+      type: string
+      enum: [read, update, delete]
+
+    Visibility:
+      description: |
+        Grant permissions to observe an object.
+        Used on server side to deside if an object could be provided to a user.
+      type: string
+      enum:
+        - ownerOnly
+        - registeredOnly
+        - public
+
+    Result:
+      description: Result of request processing.
+      type: string
+      enum: [ success, error ]
+
+    QuestionState:
+      description: Question lifecycle state.
+      type: string
+      enum: [ proposed, moderated, accepted, opened, closed ]
