@@ -42,7 +42,7 @@ class MappingTest {
         assertEquals(question?.questionId, questionModel.questionId)
         assertEquals(question?.title, questionModel.title)
         assertEquals(question?.content, questionModel.content)
-        assertEquals(question?.author, questionModel.author)
+        assertEquals(question?.author, questionModel.author.id)
         assertEquals(question?.language, questionModel.language.id)
         assertEquals(1, questionModel.tags.size)
         assertEquals("philosophy", questionModel.tags[0].id)
@@ -62,7 +62,7 @@ class MappingTest {
                 questionId = "321",
                 title = "Ultimate question.",
                 content = "What do you get if you multiply six by nine?",
-                author = "James Casingworthy",
+                author = UserId("James Casingworthy"),
                 creationTime = Instant.parse("2021-08-07T13:04:01Z"),
                 language = Language("eng"),
                 tags = listOf(QuestionTag("philosophy")),

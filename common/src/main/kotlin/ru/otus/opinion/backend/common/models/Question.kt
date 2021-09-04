@@ -6,7 +6,7 @@ data class Question (
     var questionId: String = "",
     var title: String = "",
     var content: String = "",
-    var author: String = "",
+    var author: UserId = UserId.EMPTY,
     var creationTime: Instant = Instant.now(),
     var language: Language = Language.UNDEFINED,
     var tags: List<QuestionTag> = mutableListOf(),

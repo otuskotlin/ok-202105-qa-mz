@@ -29,7 +29,7 @@ private fun QuestionTransport.toModel() : Question {
         questionId = questionId ?: "",
         title = title ?: "",
         content = content ?: "",
-        author = author ?: "",
+        author = author?.let { UserId(it) } ?: UserId.EMPTY,
         creationTime = if (creationTime == null) Instant.now() else ZonedDateTime.parse(creationTime).toInstant(),
         language = language?.let { Language(it) } ?: Language.UNDEFINED,
         tags = tags?.map(::QuestionTag) ?: mutableListOf(),
