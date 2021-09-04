@@ -44,6 +44,8 @@ class MappingTest {
         assertEquals(question?.content, questionModel.content)
         assertEquals(question?.author, questionModel.author)
         assertEquals(question?.language, questionModel.language.id)
+        assertEquals(1, questionModel.tags.size)
+        assertEquals("philosophy", questionModel.tags[0].id)
         assertEquals(QuestionState.MODERATED, questionModel.state)
         assertEquals(QuestionVisibility.PUBLIC, questionModel.visibility)
 
@@ -63,7 +65,7 @@ class MappingTest {
                 author = "James Casingworthy",
                 creationTime = Instant.parse("2021-08-07T13:04:01Z"),
                 language = Language("eng"),
-                tags = listOf("philosophy"),
+                tags = listOf(QuestionTag("philosophy")),
                 likesCount = 111,
                 answersCount = 1,
                 permissions = setOf(Permission.READ, Permission.UPDATE, Permission.DELETE),

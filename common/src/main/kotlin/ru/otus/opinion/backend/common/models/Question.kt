@@ -9,7 +9,7 @@ data class Question (
     var author: String = "",
     var creationTime: Instant = Instant.now(),
     var language: Language = Language.UNDEFINED,
-    var tags: List<String> = mutableListOf(),
+    var tags: List<QuestionTag> = mutableListOf(),
     var likesCount: Int = 0,
     var answersCount: Int = 0,
     var permissions: Set<Permission> = mutableSetOf(),

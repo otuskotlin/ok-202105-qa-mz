@@ -32,7 +32,7 @@ private fun QuestionTransport.toModel() : Question {
         author = author ?: "",
         creationTime = if (creationTime == null) Instant.now() else ZonedDateTime.parse(creationTime).toInstant(),
         language = language?.let { Language(it) } ?: Language.UNDEFINED,
-        tags = tags ?: mutableListOf(),
+        tags = tags?.map(::QuestionTag) ?: mutableListOf(),
         likesCount = 0,
         answersCount = 0,
         permissions = mutableSetOf(),
