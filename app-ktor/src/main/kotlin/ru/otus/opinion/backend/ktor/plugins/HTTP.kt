@@ -1,10 +1,24 @@
 package ru.otus.opinion.backend.ktor.plugins
 
-import io.ktor.http.*
-import io.ktor.features.*
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
 
 fun Application.configureHTTP() {
+    install(DefaultHeaders)
+    install(CallLogging)
+    install(AutoHeadResponse)
+    //install(Routing)
+    install(ContentNegotiation) {
+        jackson {
+            enable(SerializationFeature.INDENT_OUTPUT)
+            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            writerWithDefaultPrettyPrinter()
+        }
+    }
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
