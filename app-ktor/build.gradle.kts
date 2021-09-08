@@ -25,8 +25,12 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":transport-openapi"))
     implementation(project(":transport-mapping"))
+
+    // services
+    implementation(project(":app-services"))
+
     // stubs
-    implementation(project(":transport-stubs"))
+    implementation(project(":model-stubs"))
 
     testImplementation(ktor("server-test-host"))
     testImplementation(kotlin("test-junit"))

@@ -74,7 +74,7 @@ class MappingTest {
             ),
             pagination = Pagination(),
             questions = mutableListOf(),
-            processingMessages = mutableListOf(ProcessingMessage("Test message.")),
+            errors = mutableListOf(ServerErrorModel(message = "Test message.")),
             state = State.SUCCESS
 
         )
@@ -83,10 +83,10 @@ class MappingTest {
         response as CreateQuestionResponse
         assertEquals(ctx.requestId, response.requestId)
         assertEquals(Result.SUCCESS, response.result)
-        assertEquals(1, response.processingInfos?.size)
-        val expectedMessage = ctx.processingMessages[0]
-        val actualMessage = response.processingInfos?.get(0)
-        assertEquals(expectedMessage.message, actualMessage?.message)
+        assertEquals(1, response.errors?.size)
+        val expectedErrorMessage = ctx.errors[0].message
+        val actualErrorMessage = response.errors?.get(0)?.message
+        assertEquals(expectedErrorMessage, actualErrorMessage)
         val actualQuestion = response.question
         assertEquals("321", actualQuestion?.questionId)
         assertEquals("Ultimate question.", actualQuestion?.title)

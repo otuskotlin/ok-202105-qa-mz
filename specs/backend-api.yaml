@@ -94,10 +94,10 @@ components:
               type: string
             result:
               $ref: "#/components/schemas/Result"
-            processingInfos:
+            errors:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RequestProcessingMessage'
+                  $ref: '#/components/schemas/ServerError'
       discriminator:
         propertyName: className
 
@@ -109,14 +109,23 @@ components:
       allOf:
         - $ref: "#/components/schemas/Response"
 
-    RequestProcessingMessage:
-      type: object
+    ServerError:
       description: |
         Any message which can be useful for a client, e.g. form field validation error,
         some remark or hint for client.
+      type: object
       properties:
         message:
           type: string
+        level:
+          $ref: "#/components/schemas/ErrorLevel"
+        field:
+          type: string
+
+    ErrorLevel:
+      description: Server side error level.
+      type: string
+      enum: [HINT, WARNING, ERROR]
 
     ProcessingMode:
       description: Specify how the request should be processed.

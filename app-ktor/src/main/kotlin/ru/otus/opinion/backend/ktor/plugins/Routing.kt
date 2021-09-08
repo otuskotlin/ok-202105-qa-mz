@@ -1,26 +1,28 @@
 package ru.otus.opinion.backend.ktor.plugins
 
-import io.ktor.routing.*
 import io.ktor.application.*
-import io.ktor.request.*
 import io.ktor.response.*
-import ru.otus.opinion.openapi.models.CreateQuestionRequest
+import io.ktor.routing.*
+import ru.otus.opinion.backend.ktor.controllers.QuestionController
+import ru.otus.opinion.bakend.services.QuestionService
 
 fun Application.configureRouting() {
-    // Starting point for a Ktor app:
+
+    val questionService = QuestionService()
+    val questionController = QuestionController(questionService)
+
     routing {
         get("/") {
             call.respondText("Hello World!")
         }
 
         route("question") {
-            post("list") {}
+            post("list") {
+                questionController.list(call)
+            }
             post("create") {
-                val data = call.receive<CreateQuestionRequest>()
-                println(data)
-                call.respondText { data.toString() }
+                questionController.create(call)
             }
         }
     }
-
 }

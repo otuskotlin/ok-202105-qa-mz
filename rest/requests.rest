@@ -1,3 +1,4 @@
+# create question request
 POST http://localhost:8080/question/create
 Content-Type: application/json
 
@@ -12,5 +13,20 @@ Content-Type: application/json
     "author": "Bill Shake",
     "language": "English",
     "tags": ["test", "fun"]
+  }
+}
+
+### request questions list
+POST http://localhost:8080/question/list
+Content-Type: application/json
+
+{
+  "className": "QuestionsRequest",
+  "requestId": "2",
+  "processingMode": "test",
+  "pagination": {
+    "objectsCount": 10,
+    "objectId": "0",
+    "relation": "before"
   }
 }

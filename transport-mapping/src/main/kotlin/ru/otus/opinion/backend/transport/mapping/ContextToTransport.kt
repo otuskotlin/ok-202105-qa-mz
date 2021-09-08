@@ -4,10 +4,14 @@ import ru.otus.opinion.backend.common.context.RequestContext
 import ru.otus.opinion.backend.common.context.RequestContext.RequestType.*
 import ru.otus.opinion.backend.common.context.State
 import ru.otus.opinion.backend.common.models.*
+import ru.otus.opinion.backend.common.models.ErrorLevel
 import ru.otus.opinion.openapi.models.*
 import ru.otus.opinion.openapi.models.Permission as PermissionTransport
 import ru.otus.opinion.openapi.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
+import ru.otus.opinion.openapi.models.ServerError as TransportError
+import ru.otus.opinion.openapi.models.ErrorLevel as TransportErrorLevel
+
 
 fun RequestContext.toResponse() = when(contextType) {
     LIST -> toListQuestionsResponse()
@@ -18,25 +22,25 @@ fun RequestContext.toResponse() = when(contextType) {
 fun RequestContext.toListQuestionsResponse() = QuestionsResponse(
     requestId = requestId,
     result = toResult(state),
-    processingInfos = processingMessages.map(ProcessingMessage::toTransport),
+    errors = errors.map(ServerError::toTransport),
     questions = questions.map(Question::toTransport)
 )
 
 fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
     requestId = requestId,
     result = toResult(state),
-    processingInfos = processingMessages.map(ProcessingMessage::toTransport),
+    errors = errors.map(ServerError::toTransport),
     question = responseQuestion.toTransport()
 )
 
-fun RequestContext.toEmptyResponse() = EmptyResponse(
-    requestId = requestId,
-    result = Result.ERROR,
-    processingInfos = processingMessages
-        .map(ProcessingMessage::toTransport)
-        .plus(RequestProcessingMessage("Request was not processed."))
-)
-
+fun RequestContext.toEmptyResponse() : EmptyResponse {
+    errors.add(ServerErrorModel(level = ErrorLevel.ERROR, message = "Failed to process request."))
+    return EmptyResponse(
+        requestId = requestId,
+        result = Result.ERROR,
+        errors = errors.map(ServerError::toTransport)
+    )
+}
 private fun Question.toTransport() = QuestionTransport(
     questionId = questionId,
     title = title,
@@ -72,7 +76,18 @@ private fun QuestionVisibility.toTransport() = when(this) {
     QuestionVisibility.PUBLIC -> Visibility.PUBLIC
 }
 
-private fun ProcessingMessage.toTransport() = RequestProcessingMessage(message)
+private fun ServerError.toTransport() = TransportError(
+    message = message,
+    level = level.toTransport(),
+    field = field
+
+)
+
+private fun ErrorLevel.toTransport(): TransportErrorLevel = when(this) {
+    ErrorLevel.HINT -> TransportErrorLevel.HINT
+    ErrorLevel.WARNING -> TransportErrorLevel.WARNING
+    ErrorLevel.ERROR -> TransportErrorLevel.ERROR
+}
 
 private fun toResult(state: State) : Result = when(state) {
     State.SUCCESS -> Result.SUCCESS
