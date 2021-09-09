@@ -12,3 +12,4 @@ build
 **/build/
 
 .idea
+/app-ktor/documents/

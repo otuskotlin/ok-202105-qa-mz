@@ -9,7 +9,6 @@ import ru.otus.opinion.backend.common.context.RequestContext
 import ru.otus.opinion.backend.common.models.ErrorLevel
 import ru.otus.opinion.backend.common.models.ServerErrorModel
 import ru.otus.opinion.backend.transport.mapping.setQuery
-import ru.otus.opinion.backend.transport.mapping.toCreateQuestionResponse
 import ru.otus.opinion.backend.transport.mapping.toResponse
 import ru.otus.opinion.openapi.models.CreateQuestionRequest
 import ru.otus.opinion.openapi.models.QuestionsRequest
