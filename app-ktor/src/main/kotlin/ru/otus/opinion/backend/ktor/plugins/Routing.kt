@@ -13,7 +13,7 @@ fun Application.configureRouting() {
 
     routing {
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText("Hello, World!")
         }
 
         route("question") {
