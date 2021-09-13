@@ -131,7 +131,7 @@ components:
       description: Specify how the request should be processed.
       type: string
       default: prod
-      enum: [prod, test, stub]
+      enum: [PROD, TEST, STUB]
 
     Pagination:
       description: |
@@ -152,7 +152,7 @@ components:
             Specify should objects with smaller or greaterids ids,
             should be selected.
           type: string
-          enum: [before, after]
+          enum: [BEFORE, AFTER]
 
     QuestionsRequest:
       description: Request list of questions.
@@ -242,7 +242,7 @@ components:
     Permission:
       description: Which operations are granted to client.
       type: string
-      enum: [read, update, delete]
+      enum: [READ, UPDATE, DELETE]
 
     Visibility:
       description: |
@@ -250,16 +250,16 @@ components:
         Used on server side to deside if an object could be provided to a user.
       type: string
       enum:
-        - ownerOnly
-        - registeredOnly
-        - public
+        - OWNER_ONLY
+        - REGISTERED_ONLY
+        - PUBLIC
 
     Result:
       description: Result of request processing.
       type: string
-      enum: [ success, error ]
+      enum: [ SUCCESS, ERROR ]
 
     QuestionState:
       description: Question lifecycle state.
       type: string
-      enum: [ proposed, moderated, accepted, opened, closed ]
+      enum: [ PROPOSED, MODERATED, ACCEPTED, OPENED, CLOSED ]

@@ -41,6 +41,7 @@ dependencies {
     // transport models
     implementation(project(":common"))
     implementation(project(":transport-openapi"))
+    implementation(project(":transport-openapi-stubs"))
     implementation(project(":transport-mapping"))
 
     // services
