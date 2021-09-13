@@ -28,9 +28,7 @@ class QuestionRouteTest : RouterTest() {
             assertEquals(Result.SUCCESS, result)
             assertTrue(errors.isNullOrEmpty())
             assertEquals(body.requestId, requestId)
-            println("RESPONSE")
-            print(this.questions)
-            assertEquals(Stubs.questions, questions)
+            assertEquals(Stubs.allQuestions, questions)
         }
     }
 

@@ -50,5 +50,5 @@ object Stubs {
         )
     )
 
-    val questions = listOf(questionA, questionB)
+    val allQuestions = listOf(questionA, questionB)
 }
