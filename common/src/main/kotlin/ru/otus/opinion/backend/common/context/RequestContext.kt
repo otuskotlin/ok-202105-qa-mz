@@ -1,8 +1,9 @@
 package ru.otus.opinion.backend.common.context
 
+import ru.otus.opinion.backend.common.models.ErrorLevel
 import ru.otus.opinion.backend.common.models.Pagination
-import ru.otus.opinion.backend.common.models.ProcessingMessage
 import ru.otus.opinion.backend.common.models.Question
+import ru.otus.opinion.backend.common.models.ServerError
 import java.time.Instant
 
 data class RequestContext (
@@ -13,9 +14,16 @@ data class RequestContext (
     var responseQuestion: Question = Question(),
     var pagination: Pagination = Pagination(),
     var questions: MutableList<Question> = mutableListOf(),
-    var processingMessages: MutableList<ProcessingMessage> = mutableListOf(),
+    var errors: MutableList<ServerError> = mutableListOf(),
     var state: State = State.STARTED
 ) {
+    fun addError(error: ServerError) = apply {
+        errors.add(error)
+        if (error.level == ErrorLevel.ERROR) {
+            state = State.FAILED
+        }
+    }
+
     enum class RequestType {
         NONE, LIST, CREATE
     }

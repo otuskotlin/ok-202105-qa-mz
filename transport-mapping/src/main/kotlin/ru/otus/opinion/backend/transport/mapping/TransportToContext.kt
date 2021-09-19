@@ -11,6 +11,7 @@ import ru.otus.opinion.openapi.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.models.Pagination as PaginationTransport
 import ru.otus.opinion.openapi.models.Pagination.Relation as PaginationRelation
 import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
+import ru.otus.opinion.openapi.models.Permission as TransportPermission
 
 fun RequestContext.setQuery(query: CreateQuestionRequest) = apply {
     this.contextType = RequestContext.RequestType.CREATE
@@ -33,9 +34,9 @@ private fun QuestionTransport.toModel() : Question {
         creationTime = if (creationTime == null) Instant.now() else ZonedDateTime.parse(creationTime).toInstant(),
         language = language?.let { Language(it) } ?: Language.UNDEFINED,
         tags = tags?.map(::QuestionTag) ?: mutableListOf(),
-        likesCount = 0,
-        answersCount = 0,
-        permissions = mutableSetOf(),
+        likesCount = likesCount ?: 0,
+        answersCount = answersCount ?: 0,
+        permissions = permissions?.map(::toModel)?.toSet() ?: mutableSetOf(),
         state = toModel(state),
         visibility = toModel(visibility)
     )
@@ -64,4 +65,10 @@ private fun toModel(visibility : Visibility?) : QuestionVisibility = when(visibi
     Visibility.PUBLIC -> QuestionVisibility.PUBLIC
     null -> QuestionVisibility.default
 }
-    
+
+private fun toModel(permission: TransportPermission?): Permission = when(permission) {
+    TransportPermission.READ -> Permission.READ
+    TransportPermission.UPDATE -> Permission.UPDATE
+    TransportPermission.DELETE -> Permission.DELETE
+    null -> Permission.default
+}
