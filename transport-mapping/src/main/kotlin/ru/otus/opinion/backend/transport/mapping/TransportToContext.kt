@@ -1,9 +1,12 @@
 package ru.otus.opinion.backend.transport.mapping
 
+import ru.otus.opinion.backend.common.context.ProcessingMode
 import ru.otus.opinion.backend.common.context.RequestContext
+import ru.otus.opinion.backend.common.context.Stub
 import ru.otus.opinion.backend.common.models.*
 import ru.otus.opinion.openapi.models.CreateQuestionRequest
 import ru.otus.opinion.openapi.models.QuestionsRequest
+import ru.otus.opinion.openapi.models.Request
 import ru.otus.opinion.openapi.models.Visibility
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -12,17 +15,25 @@ import ru.otus.opinion.openapi.models.Pagination as PaginationTransport
 import ru.otus.opinion.openapi.models.Pagination.Relation as PaginationRelation
 import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 import ru.otus.opinion.openapi.models.Permission as TransportPermission
+import ru.otus.opinion.openapi.models.ProcessingMode as TransportProcessingMode
+import ru.otus.opinion.openapi.models.Stub as TransportStub
 
 fun RequestContext.setQuery(query: CreateQuestionRequest) = apply {
-    this.contextType = RequestContext.RequestType.CREATE
-    this.requestId = query.requestId ?: ""
-    this.requestQuestion = query.question?.toModel() ?: Question()
+    setBaseQuery(query)
+    requestType = RequestContext.RequestType.CREATE
+    requestQuestion = query.question?.toModel() ?: Question()
 }
 
 fun RequestContext.setQuery(query: QuestionsRequest) = apply {
-    this.contextType = RequestContext.RequestType.LIST
-    this.requestId = query.requestId ?: ""
-    this.pagination = query.pagination?.toModel() ?: Pagination()
+    setBaseQuery(query)
+    requestType = RequestContext.RequestType.LIST
+    pagination = query.pagination?.toModel() ?: Pagination()
+}
+
+fun RequestContext.setBaseQuery(query: Request) = apply {
+    requestId = query.requestId ?: ""
+    processingMode = toModel(query.processingMode)
+    stub = toModel(query.stub)
 }
 
 private fun QuestionTransport.toModel() : Question {
@@ -71,4 +82,18 @@ private fun toModel(permission: TransportPermission?): Permission = when(permiss
     TransportPermission.UPDATE -> Permission.UPDATE
     TransportPermission.DELETE -> Permission.DELETE
     null -> Permission.default
+}
+
+
+fun toModel(mode: TransportProcessingMode?): ProcessingMode = when(mode) {
+    TransportProcessingMode.PROD -> ProcessingMode.PROD
+    TransportProcessingMode.TEST -> ProcessingMode.TEST
+    TransportProcessingMode.STUB -> ProcessingMode.STUB
+    null -> ProcessingMode.PROD
+}
+
+fun toModel(stub: TransportStub?): Stub = when(stub) {
+    TransportStub.SUCCESS -> Stub.SUCCESS
+    TransportStub.FAIL -> Stub.FAIL
+    null -> Stub.NONE
 }

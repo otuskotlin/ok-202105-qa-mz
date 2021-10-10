@@ -79,6 +79,8 @@ components:
               type: string
             processingMode:
               $ref: '#/components/schemas/ProcessingMode'
+            stub:
+              $ref: '#/components/schemas/Stub'
       discriminator:
         propertyName: className
 
@@ -125,13 +127,18 @@ components:
     ErrorLevel:
       description: Server side error level.
       type: string
-      enum: [HINT, WARNING, ERROR]
+      enum: [hint, warning, error]
 
     ProcessingMode:
       description: Specify how the request should be processed.
       type: string
       default: prod
-      enum: [PROD, TEST, STUB]
+      enum: [prod, test, stub]
+
+    Stub:
+      description: Server return specified stub response in 'stub' processing mode.
+      type: string
+      enum: [success, fail]
 
     Pagination:
       description: |
@@ -152,7 +159,7 @@ components:
             Specify should objects with smaller or greaterids ids,
             should be selected.
           type: string
-          enum: [BEFORE, AFTER]
+          enum: [before, after]
 
     QuestionsRequest:
       description: Request list of questions.

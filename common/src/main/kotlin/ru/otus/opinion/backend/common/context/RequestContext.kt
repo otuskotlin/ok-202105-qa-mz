@@ -7,7 +7,9 @@ import ru.otus.opinion.backend.common.models.ServerError
 import java.time.Instant
 
 data class RequestContext (
-    var contextType: RequestType = RequestType.NONE,
+    var requestType: RequestType = RequestType.NONE,
+    var processingMode: ProcessingMode = ProcessingMode.PROD,
+    var stub: Stub = Stub.NONE,
     var requestId: String = "",
     var startTime: Instant = Instant.now(),
     var requestQuestion: Question = Question(),
@@ -15,7 +17,7 @@ data class RequestContext (
     var pagination: Pagination = Pagination(),
     var questions: MutableList<Question> = mutableListOf(),
     var errors: MutableList<ServerError> = mutableListOf(),
-    var state: State = State.STARTED
+    var state: State = State.INITIAL
 ) {
     fun addError(error: ServerError) = apply {
         errors.add(error)

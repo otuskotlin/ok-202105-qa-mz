@@ -1,5 +1,5 @@
 import kotlinx.coroutines.runBlocking
-import ru.otus.opinion.backend.common.cor.dsl.builders.LauncherBuilder
+import ru.otus.opinion.backend.common.cor.dsl.builders.ChainBuilder
 import ru.otus.opinion.backend.common.cor.dsl.chain
 import ru.otus.opinion.backend.common.cor.dsl.worker
 import kotlin.test.Test
@@ -49,7 +49,7 @@ class TestDsl {
         assertEquals(6, ctx.value)
     }
 
-    private fun LauncherBuilder<TestContext>.incrementer() =
+    private fun ChainBuilder<TestContext>.incrementer() =
         worker {
             execute {
                 value++

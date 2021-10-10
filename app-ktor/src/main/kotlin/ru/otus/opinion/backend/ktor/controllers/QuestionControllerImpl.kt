@@ -16,7 +16,7 @@ import ru.otus.opinion.openapi.models.QuestionsRequest
 class QuestionControllerImpl(private val questionService: QuestionService) : QuestionController {
 
     override suspend fun create(call: ApplicationCall) {
-        val ctx = RequestContext(contextType = RequestContext.RequestType.CREATE)
+        val ctx = RequestContext(requestType = RequestContext.RequestType.CREATE)
         try {
             val request = call.receive<CreateQuestionRequest>()
             ctx.setQuery(request)
@@ -30,7 +30,7 @@ class QuestionControllerImpl(private val questionService: QuestionService) : Que
     }
 
     override suspend fun list(call: ApplicationCall) {
-        val ctx = RequestContext(contextType = RequestContext.RequestType.LIST)
+        val ctx = RequestContext(requestType = RequestContext.RequestType.LIST)
         try {
             val request = call.receive<QuestionsRequest>()
             ctx.setQuery(request)

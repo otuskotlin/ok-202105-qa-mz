@@ -7,7 +7,7 @@ import ru.otus.opinion.backend.common.cor.dsl.CorDslMarker
  * Use to build a [Launcher].
  */
 @CorDslMarker
-class LauncherBuilder<T>(private val runner: Runner<T>): BuilderBase<T>() {
+class ChainBuilder<T>(private val runner: Runner<T>): BuilderBase<T>() {
 
     private val innerWorkers: MutableList<Worker<T>> = mutableListOf()
 
@@ -16,18 +16,18 @@ class LauncherBuilder<T>(private val runner: Runner<T>): BuilderBase<T>() {
         innerWorkers.add(worker)
     }
 
-    fun chain(initializer: LauncherBuilder<T>.() -> Unit) {
-        val worker = LauncherBuilder(SequentialRunner<T>()).apply(initializer).build()
+    fun chain(initializer: ChainBuilder<T>.() -> Unit) {
+        val worker = ChainBuilder(SequentialRunner<T>()).apply(initializer).build()
         innerWorkers.add(worker)
     }
 
-    fun parallel(initializer: LauncherBuilder<T>.() -> Unit) {
-        val worker = LauncherBuilder(ParallelRunner<T>()).apply(initializer).build()
+    fun parallel(initializer: ChainBuilder<T>.() -> Unit) {
+        val worker = ChainBuilder(ParallelRunner<T>()).apply(initializer).build()
         innerWorkers.add(worker)
     }
 
     internal fun build(): Worker<T> {
-        val launcher = Launcher<T>(runner, innerWorkers)
-        return ConditionalWorker<T>(launcher, on, onException)
+        val launcher = Launcher(runner, innerWorkers)
+        return ConditionalWorker(launcher, on, onException)
     }
 }

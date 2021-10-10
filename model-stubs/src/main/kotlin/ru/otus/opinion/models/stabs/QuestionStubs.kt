@@ -5,8 +5,10 @@ import java.time.Instant
 
 object QuestionStubs {
 
+    const val questionId = "Stub question id"
+
     val questionA = Question(
-        questionId = "321",
+        questionId = questionId,
         title = "Ultimate question.",
         content = "What do you get if you multiply six by nine?",
         author = UserId("James Casingworthy"),
@@ -34,6 +36,8 @@ object QuestionStubs {
         state = QuestionState.MODERATED,
         visibility = QuestionVisibility.PUBLIC
     )
+
+    val errorMessage = "Stub error message."
 
     fun allQuestions() = mutableListOf(questionA, questionB)
 }

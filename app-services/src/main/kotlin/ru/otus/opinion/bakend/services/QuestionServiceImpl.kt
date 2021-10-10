@@ -1,20 +1,17 @@
 package ru.otus.opinion.bakend.services
 
-import ru.otus.opinion.models.stabs.QuestionStubs
 import ru.otus.opinion.backend.common.context.RequestContext
-import ru.otus.opinion.backend.common.context.State
+import ru.otus.opinion.logics.Crud
 
-class QuestionServiceImpl : QuestionService {
+class QuestionServiceImpl(private val crud: Crud) : QuestionService {
 
-    override fun create(ctx: RequestContext): RequestContext {
-        ctx.responseQuestion = QuestionStubs.questionA
-        ctx.state = State.SUCCESS
+    override suspend fun create(ctx: RequestContext): RequestContext {
+        crud.create(ctx)
         return ctx
     }
 
-    override fun list(ctx: RequestContext): RequestContext {
-        ctx.questions.addAll(QuestionStubs.allQuestions())
-        ctx.state = State.SUCCESS
+    override suspend fun list(ctx: RequestContext): RequestContext {
+        crud.list(ctx)
         return ctx
     }
 }

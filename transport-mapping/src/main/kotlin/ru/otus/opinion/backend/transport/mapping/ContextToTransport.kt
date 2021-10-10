@@ -13,7 +13,7 @@ import ru.otus.opinion.openapi.models.ServerError as TransportError
 import ru.otus.opinion.openapi.models.ErrorLevel as TransportErrorLevel
 
 
-fun RequestContext.toResponse() = when(contextType) {
+fun RequestContext.toResponse() = when(requestType) {
     LIST -> toListQuestionsResponse()
     CREATE -> toCreateQuestionResponse()
     NONE -> toEmptyResponse()
@@ -90,7 +90,8 @@ private fun ErrorLevel.toTransport(): TransportErrorLevel = when(this) {
 }
 
 private fun toResult(state: State) : Result = when(state) {
+    State.INITIAL -> Result.ERROR
     State.SUCCESS -> Result.SUCCESS
-    State.STARTED -> Result.ERROR
+    State.RUNNING -> Result.ERROR
     State.FAILED -> Result.ERROR
 }
