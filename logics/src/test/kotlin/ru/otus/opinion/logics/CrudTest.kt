@@ -15,7 +15,18 @@ class CrudTest {
     private val crud = Crud()
 
     @Test
-    fun testSuccessCreate() {
+    fun `test request with wrong type`() {
+        val ctx = RequestContext(
+            requestType = RequestContext.RequestType.LIST
+        )
+        runBlocking {
+            crud.create(ctx)
+        }
+        assertEquals(State.FAILED, ctx.state)
+    }
+
+    @Test
+    fun `test create request processing with SUCCESS stub`() {
         val ctx = RequestContext(
             requestType = RequestContext.RequestType.CREATE,
             processingMode = ProcessingMode.STUB,
@@ -31,7 +42,7 @@ class CrudTest {
     }
 
     @Test
-    fun testFailedCreate() {
+    fun `test create request processing with FAIL stub`() {
         val ctx = RequestContext(
             requestType = RequestContext.RequestType.CREATE,
             processingMode = ProcessingMode.STUB,
@@ -48,7 +59,7 @@ class CrudTest {
     }
 
     @Test
-    fun testSuccessQuestionsList() {
+    fun `test questions list request with SUCCESS stub`() {
         val ctx = RequestContext(
             requestType = RequestContext.RequestType.LIST,
             processingMode = ProcessingMode.STUB,
@@ -61,5 +72,18 @@ class CrudTest {
         }
         assertEquals(State.SUCCESS, ctx.state)
         assertEquals(QuestionStubs.allQuestions(), ctx.questions)
+    }
+
+    @Test
+    fun `test validation of invalid create request`() {
+        val ctx = RequestContext(
+            requestType = RequestContext.RequestType.CREATE,
+            processingMode = ProcessingMode.TEST,
+            requestQuestion = Question(title = "") // title string must be not blank
+        )
+        runBlocking {
+            crud.create(ctx)
+        }
+        assertEquals(State.FAILED, ctx.state)
     }
 }

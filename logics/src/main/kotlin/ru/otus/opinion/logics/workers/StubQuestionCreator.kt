@@ -1,4 +1,4 @@
-package ru.otus.opinion.logics.workers.stubs
+package ru.otus.opinion.logics.workers
 
 import ru.otus.opinion.backend.common.context.RequestContext
 import ru.otus.opinion.backend.common.context.State
