@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":common-cor"))
     implementation(project(":model-stubs"))
+    implementation(project(":validation"))
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))

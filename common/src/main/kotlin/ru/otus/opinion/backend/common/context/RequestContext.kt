@@ -17,9 +17,9 @@ data class RequestContext (
     var pagination: Pagination = Pagination(),
     var questions: MutableList<Question> = mutableListOf(),
     var errors: MutableList<ServerError> = mutableListOf(),
-    var state: State = State.INITIAL
-) {
-    fun addError(error: ServerError) = apply {
+    override var state: State = State.INITIAL
+) : Context {
+    override fun addError(error: ServerError) = apply {
         errors.add(error)
         if (error.level == ErrorLevel.ERROR) {
             state = State.FAILED
