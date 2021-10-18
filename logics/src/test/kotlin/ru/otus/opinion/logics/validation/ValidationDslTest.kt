@@ -8,7 +8,7 @@ import ru.otus.opinion.backend.common.cor.dsl.chain
 import ru.otus.opinion.backend.common.models.ServerError
 import ru.otus.opinion.validation.ValidationResult
 import ru.otus.opinion.validation.Validator
-import ru.otus.opinion.validation.validators.NotNullValidator
+import ru.otus.opinion.validation.validators.NonNullityValidator
 import ru.otus.opinion.validation.validators.RangeValidator
 import ru.otus.opinion.validation.validators.StringIsNotEmptyValidator
 import kotlin.test.assertEquals
@@ -22,7 +22,7 @@ class ValidationDslTest {
             validate { name } with StringIsNotEmptyValidator("name")
             validate { surname } with StringIsNotEmptyValidator("surname")
             validate { text } with ExceptionProducer("text")
-            validate { lang } with NotNullValidator("lang")
+            validate { lang } with NonNullityValidator("lang")
             validate { age } with RangeValidator(field = "age", min = 1, max = 200)
         }
         runBlocking {

@@ -3,7 +3,7 @@ package ru.otus.opinion.validation
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import ru.otus.opinion.validation.validators.NotNullValidator
+import ru.otus.opinion.validation.validators.NonNullityValidator
 import ru.otus.opinion.validation.validators.RangeValidator
 import ru.otus.opinion.validation.validators.StringIsNotEmptyValidator
 
@@ -11,7 +11,7 @@ class ValidatorsTest {
 
     @Test
     fun testNotNullValidator() {
-        val validator = NotNullValidator<String>()
+        val validator = NonNullityValidator<String>()
 
         var result = validator.validate("")
         assertTrue(result.isSuccess)
