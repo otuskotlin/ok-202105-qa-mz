@@ -46,7 +46,6 @@ dependencies {
 
     // services
     implementation(project(":app-services"))
-    implementation(project(":logics"))
     // stubs
     implementation(project(":model-stubs"))
 
