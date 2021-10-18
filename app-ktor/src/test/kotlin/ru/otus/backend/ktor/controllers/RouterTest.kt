@@ -15,11 +15,17 @@ abstract class RouterTest {
         body: Request? = null,
         path: String,
         crossinline block: T.() -> Unit
+    ) = testPostRequest(mapper.writeValueAsString(body), path, block)
+
+    protected inline fun <reified T> testPostRequest(
+        body: String = "",
+        path: String,
+        crossinline block: T.() -> Unit
     ) {
         withTestApplication(Application::module) {
             handleRequest(HttpMethod.Post, path) {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
-                setBody(mapper.writeValueAsString(body))
+                setBody(body)
             }.apply {
                 println(response.content)
                 assertEquals(HttpStatusCode.OK, response.status())
