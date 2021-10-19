@@ -3,6 +3,7 @@ package ru.otus.opinion.logics.workers
 import ru.otus.opinion.backend.common.context.RequestContext
 import ru.otus.opinion.backend.common.context.State
 import ru.otus.opinion.backend.common.cor.dsl.builders.ChainBuilder
+import ru.otus.opinion.backend.common.models.ErrorType
 import ru.otus.opinion.backend.common.models.ServerError
 
 internal fun ChainBuilder<RequestContext>.init() =
@@ -14,9 +15,10 @@ internal fun ChainBuilder<RequestContext>.init() =
                 val contextState = state
                 state = State.FAILED
                 addError(
-                    ServerError(message = """
-                        Failed to init processing chain: context state is $contextState but expected state is ${State.INITIAL}  
-                    """.trimIndent())
+                    ServerError(
+                        errorType = ErrorType.INITIALIZATION_ERROR,
+                        message = "Failed to init processing chain: context state is $contextState but expected state is ${State.INITIAL}"
+                    )
                 )
             }
         }

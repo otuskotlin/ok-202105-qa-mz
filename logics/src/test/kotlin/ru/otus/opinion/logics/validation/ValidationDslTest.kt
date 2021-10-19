@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.otus.opinion.backend.common.context.Context
 import ru.otus.opinion.backend.common.context.State
 import ru.otus.opinion.backend.common.cor.dsl.chain
+import ru.otus.opinion.backend.common.models.ErrorType
 import ru.otus.opinion.backend.common.models.ServerError
 import ru.otus.opinion.validation.ValidationResult
 import ru.otus.opinion.validation.Validator
@@ -32,6 +33,13 @@ class ValidationDslTest {
         val expectedFields = setOf("name", "text", "lang")
         val actualFields = ctx.errors.map(ServerError::field).toSet()
         assertEquals(expectedFields, actualFields)
+        ctx.errors.forEach { error ->
+            if ("text" == error.field) {
+                assertEquals(ErrorType.SERVER_ERROR, error.errorType)
+            } else {
+                assertEquals(ErrorType.VALIDATION_ERROR, error.errorType)
+            }
+        }
     }
 
     /**

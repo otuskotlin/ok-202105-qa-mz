@@ -119,15 +119,22 @@ components:
       properties:
         message:
           type: string
-        level:
-          $ref: "#/components/schemas/ErrorLevel"
         field:
           type: string
+        level:
+          $ref: "#/components/schemas/ErrorLevel"
+        errorType:
+          $ref: "#/components/schemas/ErrorType"
 
     ErrorLevel:
       description: Server side error level.
       type: string
       enum: [hint, warning, error]
+
+    ErrorType:
+      description: Points to error
+      type: string
+      enum: [initialization_error, request_parsing_error, error_stub, validation_error, server_error]
 
     ProcessingMode:
       description: Specify how the request should be processed.

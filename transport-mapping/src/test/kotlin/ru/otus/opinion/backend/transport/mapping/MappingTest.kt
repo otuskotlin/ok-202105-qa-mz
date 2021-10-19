@@ -11,6 +11,8 @@ import java.time.Instant
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import ru.otus.opinion.openapi.stabs.Stubs as TransportStubs
+import ru.otus.opinion.openapi.models.ErrorType as TransportErrorType
+import ru.otus.opinion.openapi.models.ErrorLevel as TransportErrorLevel
 
 class MappingTest {
 
@@ -35,19 +37,24 @@ class MappingTest {
             responseQuestion = QuestionStubs.questionA,
             pagination = Pagination(),
             questions = mutableListOf(),
-            errors = mutableListOf(ServerError(message = "Test message.")),
-            state = State.SUCCESS
+            errors = mutableListOf(ServerError(
+                level = ErrorLevel.ERROR,
+                errorType = ErrorType.ERROR_STUB,
+                message = "Test message."
+            )),
+            state = State.FAILED
         )
         val response = ctx.toResponse()
         assertTrue(response is CreateQuestionResponse)
         response as CreateQuestionResponse
         assertEquals(ctx.requestId, response.requestId)
-        assertEquals(Result.SUCCESS, response.result)
+        assertEquals(Result.ERROR, response.result)
         assertEquals(1, response.errors?.size)
         val expectedErrorMessage = ctx.errors[0].message
         val actualErrorMessage = response.errors?.get(0)?.message
         assertEquals(expectedErrorMessage, actualErrorMessage)
-
+        assertEquals(TransportErrorLevel.ERROR, response.errors?.get(0)?.level)
+        assertEquals(TransportErrorType.ERROR_STUB, response.errors?.get(0)?.errorType)
         assertEquals(TransportStubs.questionA, response.question)
     }
 }

@@ -4,6 +4,7 @@ import ru.otus.opinion.backend.common.context.Context
 import ru.otus.opinion.backend.common.context.State
 import ru.otus.opinion.backend.common.cor.dsl.builders.ChainBuilder
 import ru.otus.opinion.backend.common.models.ErrorLevel
+import ru.otus.opinion.backend.common.models.ErrorType
 import ru.otus.opinion.backend.common.models.ServerError
 import ru.otus.opinion.validation.Validator
 
@@ -36,20 +37,23 @@ class ValidationTaskBuilder<CTX : Context, T>(
                 validationResult.errors.forEach { error ->
                     addError(
                         ServerError(
-                        field = validator.field,
-                        message = error.message,
-                        level = ErrorLevel.ERROR
-                    )
+                            field = validator.field,
+                            message = error.message,
+                            level = ErrorLevel.ERROR,
+                            errorType = ErrorType.VALIDATION_ERROR
+                        )
                     )
                 }
             }
             onException {
                 state = State.FAILED
-                addError(ServerError(
-                    field = validator.field,
-                    message = "Failed to validate request. Caught an exception: $it",
-                    level = ErrorLevel.ERROR
-                ))
+                addError(
+                    ServerError(
+                        field = validator.field,
+                        message = "Failed to validate request. Caught an exception: $it",
+                        level = ErrorLevel.ERROR,
+                        errorType = ErrorType.SERVER_ERROR
+                    ))
             }
         }
     }

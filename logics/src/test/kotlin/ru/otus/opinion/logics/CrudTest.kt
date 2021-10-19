@@ -23,6 +23,8 @@ class CrudTest {
             crud.create(ctx)
         }
         assertEquals(State.FAILED, ctx.state)
+        val error = ctx.errors[0]
+        assertEquals(ErrorType.INITIALIZATION_ERROR, error.errorType)
     }
 
     @Test
@@ -38,6 +40,7 @@ class CrudTest {
             crud.create(ctx)
         }
         assertEquals(State.SUCCESS, ctx.state)
+        assertEquals(0, ctx.errors.size)
         assertEquals(QuestionStubs.questionA, ctx.responseQuestion)
     }
 
@@ -55,6 +58,7 @@ class CrudTest {
         }
         assertEquals(State.FAILED, ctx.state)
         assertEquals(1, ctx.errors.size)
+        assertEquals(ErrorType.ERROR_STUB, ctx.errors[0].errorType)
         assertEquals(QuestionStubs.errorMessage, ctx.errors[0].message)
     }
 
@@ -71,6 +75,7 @@ class CrudTest {
             crud.list(ctx)
         }
         assertEquals(State.SUCCESS, ctx.state)
+        assertEquals(0, ctx.errors.size)
         assertEquals(QuestionStubs.allQuestions(), ctx.questions)
     }
 
@@ -85,5 +90,7 @@ class CrudTest {
             crud.create(ctx)
         }
         assertEquals(State.FAILED, ctx.state)
+        assertEquals(1, ctx.errors.size)
+        assertEquals(ErrorType.VALIDATION_ERROR, ctx.errors[0].errorType)
     }
 }
