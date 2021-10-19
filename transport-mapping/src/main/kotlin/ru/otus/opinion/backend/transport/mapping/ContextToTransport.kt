@@ -21,14 +21,14 @@ fun RequestContext.toResponse() = when(requestType) {
 }
 
 fun RequestContext.toListQuestionsResponse() = QuestionsResponse(
-    requestId = requestId,
+    requestId = requestId.id,
     result = toResult(state),
     errors = errors.map(ServerError::toTransport),
     questions = questions.map(Question::toTransport)
 )
 
 fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
-    requestId = requestId,
+    requestId = requestId.id,
     result = toResult(state),
     errors = errors.map(ServerError::toTransport),
     question = responseQuestion.toTransport()
@@ -37,13 +37,13 @@ fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
 fun RequestContext.toEmptyResponse() : EmptyResponse {
     errors.add(ServerError(level = ErrorLevel.ERROR, message = "Failed to process request."))
     return EmptyResponse(
-        requestId = requestId,
+        requestId = requestId.id,
         result = Result.ERROR,
         errors = errors.map(ServerError::toTransport)
     )
 }
 private fun Question.toTransport() = QuestionTransport(
-    questionId = questionId,
+    questionId = questionId.id,
     title = title,
     content = content,
     author = author.id,

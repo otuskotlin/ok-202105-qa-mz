@@ -1,16 +1,13 @@
 package ru.otus.opinion.backend.common.context
 
-import ru.otus.opinion.backend.common.models.ErrorLevel
-import ru.otus.opinion.backend.common.models.Pagination
-import ru.otus.opinion.backend.common.models.Question
-import ru.otus.opinion.backend.common.models.ServerError
+import ru.otus.opinion.backend.common.models.*
 import java.time.Instant
 
 data class RequestContext (
     var requestType: RequestType = RequestType.NONE,
     var processingMode: ProcessingMode = ProcessingMode.PROD,
     var stub: Stub = Stub.NONE,
-    var requestId: String = "",
+    var requestId: RequestId = RequestId.EMPTY,
     var startTime: Instant = Instant.now(),
     var requestQuestion: Question = Question(),
     var responseQuestion: Question = Question(),

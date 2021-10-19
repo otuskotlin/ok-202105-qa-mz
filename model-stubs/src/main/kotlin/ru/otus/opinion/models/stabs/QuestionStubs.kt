@@ -5,7 +5,7 @@ import java.time.Instant
 
 object QuestionStubs {
 
-    const val questionId = "Stub question id"
+    val questionId = QuestionId("Stub question id")
 
     val questionA = Question(
         questionId = questionId,
@@ -23,7 +23,7 @@ object QuestionStubs {
     )
 
     val questionB = Question(
-        questionId = "17",
+        questionId = QuestionId("17"),
         title = "Funny question.",
         content = "To beat or not to beat?",
         author = UserId("Mary"),

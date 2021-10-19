@@ -31,14 +31,14 @@ fun RequestContext.setQuery(query: QuestionsRequest) = apply {
 }
 
 fun RequestContext.setBaseQuery(query: Request) = apply {
-    requestId = query.requestId ?: ""
+    requestId = RequestId(query.requestId ?: "")
     processingMode = toModel(query.processingMode)
     stub = toModel(query.stub)
 }
 
 private fun QuestionTransport.toModel() : Question {
     return Question (
-        questionId = questionId ?: "",
+        questionId = QuestionId(questionId ?: ""),
         title = title ?: "",
         content = content ?: "",
         author = author?.let { UserId(it) } ?: UserId.EMPTY,

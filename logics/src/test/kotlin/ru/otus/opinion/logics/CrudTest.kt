@@ -33,7 +33,7 @@ class CrudTest {
             requestType = RequestContext.RequestType.CREATE,
             processingMode = ProcessingMode.STUB,
             stub = Stub.SUCCESS,
-            requestId = "123",
+            requestId = RequestId("123"),
             requestQuestion = QuestionStubs.questionA
         )
         runBlocking {
@@ -50,7 +50,7 @@ class CrudTest {
             requestType = RequestContext.RequestType.CREATE,
             processingMode = ProcessingMode.STUB,
             stub = Stub.FAIL,
-            requestId = "123",
+            requestId = RequestId("123"),
             requestQuestion = QuestionStubs.questionA
         )
         runBlocking {
@@ -68,7 +68,7 @@ class CrudTest {
             requestType = RequestContext.RequestType.LIST,
             processingMode = ProcessingMode.STUB,
             stub = Stub.SUCCESS,
-            requestId = "123",
+            requestId = RequestId("123"),
             pagination = Pagination(count = 2, id = "0", relation = Relation.AFTER)
         )
         runBlocking {
