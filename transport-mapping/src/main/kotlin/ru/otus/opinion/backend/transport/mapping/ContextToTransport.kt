@@ -34,7 +34,7 @@ fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
 )
 
 fun RequestContext.toEmptyResponse() : EmptyResponse {
-    errors.add(ServerErrorModel(level = ErrorLevel.ERROR, message = "Failed to process request."))
+    errors.add(ServerError(level = ErrorLevel.ERROR, message = "Failed to process request."))
     return EmptyResponse(
         requestId = requestId,
         result = Result.ERROR,

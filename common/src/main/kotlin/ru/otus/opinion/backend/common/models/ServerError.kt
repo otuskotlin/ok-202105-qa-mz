@@ -1,7 +1,7 @@
 package ru.otus.opinion.backend.common.models
 
-interface ServerError {
-    val field: String
-    val level: ErrorLevel
-    val message: String
-}
+class ServerError(
+    val field: String = "",
+    val message: String = "",
+    val level: ErrorLevel = ErrorLevel.ERROR
+)

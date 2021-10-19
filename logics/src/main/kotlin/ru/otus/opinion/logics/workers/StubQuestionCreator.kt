@@ -4,7 +4,7 @@ import ru.otus.opinion.backend.common.context.RequestContext
 import ru.otus.opinion.backend.common.context.State
 import ru.otus.opinion.backend.common.context.Stub
 import ru.otus.opinion.backend.common.cor.dsl.builders.ChainBuilder
-import ru.otus.opinion.backend.common.models.ServerErrorModel
+import ru.otus.opinion.backend.common.models.ServerError
 import ru.otus.opinion.models.stabs.QuestionStubs
 
 internal fun ChainBuilder<RequestContext>.createQuestionStub() = worker {
@@ -19,7 +19,7 @@ internal fun ChainBuilder<RequestContext>.createQuestionStub() = worker {
                 state = State.SUCCESS
             }
             Stub.FAIL -> {
-                addError(ServerErrorModel(message = QuestionStubs.errorMessage))
+                addError(ServerError(message = QuestionStubs.errorMessage))
                 state = State.FAILED
             }
         }

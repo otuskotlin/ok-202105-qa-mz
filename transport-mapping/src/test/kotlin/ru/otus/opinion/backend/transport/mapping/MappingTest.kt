@@ -35,7 +35,7 @@ class MappingTest {
             responseQuestion = QuestionStubs.questionA,
             pagination = Pagination(),
             questions = mutableListOf(),
-            errors = mutableListOf(ServerErrorModel(message = "Test message.")),
+            errors = mutableListOf(ServerError(message = "Test message.")),
             state = State.SUCCESS
         )
         val response = ctx.toResponse()
