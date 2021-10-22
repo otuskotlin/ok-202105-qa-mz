@@ -42,13 +42,7 @@ class QuestionControllerImpl(private val questionService: QuestionService) : Que
                 )
             )
         } catch (ex: Throwable) {
-            ctx.addError(
-                ServerError(
-                    level = ErrorLevel.ERROR,
-                    errorType = ErrorType.SERVER_ERROR,
-                    message = "Server error: ${ex.message}"
-                )
-            )
+            ctx.addError(ServerError(ex))
         }
         call.respond(ctx.toResponse())
     }

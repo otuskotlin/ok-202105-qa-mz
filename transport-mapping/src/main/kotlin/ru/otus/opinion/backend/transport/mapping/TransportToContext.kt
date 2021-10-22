@@ -10,13 +10,33 @@ import ru.otus.opinion.openapi.models.Request
 import ru.otus.opinion.openapi.models.Visibility
 import java.time.Instant
 import java.time.ZonedDateTime
-import ru.otus.opinion.openapi.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.models.Pagination as PaginationTransport
 import ru.otus.opinion.openapi.models.Pagination.Relation as PaginationRelation
-import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 import ru.otus.opinion.openapi.models.Permission as TransportPermission
 import ru.otus.opinion.openapi.models.ProcessingMode as TransportProcessingMode
+import ru.otus.opinion.openapi.models.Question as QuestionTransport
+import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 import ru.otus.opinion.openapi.models.Stub as TransportStub
+
+fun RequestContext.setQuery(request: Request): RequestContext = apply {
+
+    fun failedToConvert(): RequestContext {
+        return addError(ServerError(
+            message = "Failed map request $request to inner model.",
+            level = ErrorLevel.ERROR,
+            errorType = ErrorType.FAIL_BUILD_REQUEST_MODEL))
+    }
+
+    try {
+        when(request) {
+            is CreateQuestionRequest -> setQuery(request)
+            is QuestionsRequest -> setQuery(request)
+            else -> failedToConvert()
+        }
+    } catch (ex: Throwable) {
+        failedToConvert()
+    }
+}
 
 fun RequestContext.setQuery(query: CreateQuestionRequest) = apply {
     setBaseQuery(query)

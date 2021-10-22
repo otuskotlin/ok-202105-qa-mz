@@ -134,7 +134,7 @@ components:
     ErrorType:
       description: Points to error
       type: string
-      enum: [initialization_error, request_parsing_error, error_stub, validation_error, server_error]
+      enum: [initialization_error, request_parsing_error, fail_build_request_model, error_stub, validation_error, server_error]
 
     ProcessingMode:
       description: Specify how the request should be processed.

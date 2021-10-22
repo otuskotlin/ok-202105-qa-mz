@@ -96,6 +96,7 @@ private fun ErrorType.toTransport(): TransportErrorType = when(this) {
     ErrorType.ERROR_STUB -> TransportErrorType.ERROR_STUB
     ErrorType.VALIDATION_ERROR -> TransportErrorType.VALIDATION_ERROR
     ErrorType.SERVER_ERROR -> TransportErrorType.SERVER_ERROR
+    ErrorType.FAIL_BUILD_REQUEST_MODEL -> TransportErrorType.FAIL_BUILD_REQUEST_MODEL
 }
 
 private fun toResult(state: State) : Result = when(state) {
