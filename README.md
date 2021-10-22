@@ -33,15 +33,17 @@ is very close to the desired service.
 
 # Subprojects
 
+1. [app-kafka](app-kafka) Application with Kafka as a transport.
 1. [app-ktor](app-ktor) Ktor application
-2. [app-services](app-services) Service layer
-3. [common](common) Inner models
-4. [common-cor](common-cor) DSL library used to implement Chain of Responsibility pattern
-5. [logics](logics) Buisiness logic
-6. [model-stubs](model-stubs) Stubs for inner models
-7. [rest](rest) Test HTTP requests
-8. [specs](specs) Open API service description
-9. [transport-mapping](transport-mapping) Mapping between transport and inner models
-10. [transport-openapi](transport-openapi) Transport models (generated with OpenAPI)
-11. [transport-openapi-stubs](transport-openapi-stubs) Stubs for transport models
-12. [validation](validation) Request validators
+1. [services](services) Service layer
+1. [common](common) Inner models
+1. [common-cor](common-cor) DSL library used to implement Chain of Responsibility pattern
+1. [docker](docker) Docker-compose configurations to run applications in containers   
+1. [logics](logics) Business logic
+1. [model-stubs](model-stubs) Stubs for inner models
+1. [rest](rest) Test HTTP requests
+1. [specs](specs) Open API service description
+1. [transport-mapping](transport-mapping) Mapping between transport and inner models
+1. [transport-openapi](transport-openapi) Transport models (generated with OpenAPI)
+1. [transport-openapi-stubs](transport-openapi-stubs) Stubs for transport models
+1. [validation](validation) Request validators
