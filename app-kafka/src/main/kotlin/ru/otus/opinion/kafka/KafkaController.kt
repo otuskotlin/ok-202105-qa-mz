@@ -43,7 +43,9 @@ class KafkaController(private val config: KafkaConfig) {
                         sendResponse(service.handle(ctx).toResponse())
                     }
                 } catch (ex: Throwable) {
-                    sendResponse(ctx.addError(ServerError(ex)).toResponse())
+                    withContext(NonCancellable) {
+                        sendResponse(ctx.addError(ServerError(ex)).toResponse())
+                    }
                 }
             }
         } catch (ex: WakeupException) {
