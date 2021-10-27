@@ -15,7 +15,7 @@ openApiGenerate {
     generatorName.set("kotlin")
     generateApiDocumentation.set(true)
 //    outputDir.set("$rootDir")
-    inputSpec.set("$rootDir/specs/backend-api.yaml")
+    inputSpec.set("$rootDir/specs/api.yaml")
 
     packageName.set(openapiGroup)
     apiPackage.set("$openapiGroup.api")

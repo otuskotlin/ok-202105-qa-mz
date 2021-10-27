@@ -11,38 +11,39 @@ import ru.otus.opinion.openapi.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 import ru.otus.opinion.openapi.models.ServerError as TransportError
 import ru.otus.opinion.openapi.models.ErrorLevel as TransportErrorLevel
+import ru.otus.opinion.openapi.models.ErrorType as TransportErrorType
 
 
-fun RequestContext.toResponse() = when(contextType) {
+fun RequestContext.toResponse() = when(requestType) {
     LIST -> toListQuestionsResponse()
     CREATE -> toCreateQuestionResponse()
     NONE -> toEmptyResponse()
 }
 
 fun RequestContext.toListQuestionsResponse() = QuestionsResponse(
-    requestId = requestId,
+    requestId = requestId.id,
     result = toResult(state),
     errors = errors.map(ServerError::toTransport),
     questions = questions.map(Question::toTransport)
 )
 
 fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
-    requestId = requestId,
+    requestId = requestId.id,
     result = toResult(state),
     errors = errors.map(ServerError::toTransport),
     question = responseQuestion.toTransport()
 )
 
 fun RequestContext.toEmptyResponse() : EmptyResponse {
-    errors.add(ServerErrorModel(level = ErrorLevel.ERROR, message = "Failed to process request."))
+    errors.add(ServerError(level = ErrorLevel.ERROR, message = "Failed to process request."))
     return EmptyResponse(
-        requestId = requestId,
+        requestId = requestId.id,
         result = Result.ERROR,
         errors = errors.map(ServerError::toTransport)
     )
 }
 private fun Question.toTransport() = QuestionTransport(
-    questionId = questionId,
+    questionId = questionId.id,
     title = title,
     content = content,
     author = author.id,
@@ -79,8 +80,8 @@ private fun QuestionVisibility.toTransport() = when(this) {
 private fun ServerError.toTransport() = TransportError(
     message = message,
     level = level.toTransport(),
-    field = field
-
+    field = field,
+    errorType = errorType.toTransport()
 )
 
 private fun ErrorLevel.toTransport(): TransportErrorLevel = when(this) {
@@ -89,8 +90,18 @@ private fun ErrorLevel.toTransport(): TransportErrorLevel = when(this) {
     ErrorLevel.ERROR -> TransportErrorLevel.ERROR
 }
 
+private fun ErrorType.toTransport(): TransportErrorType = when(this) {
+    ErrorType.INITIALIZATION_ERROR -> TransportErrorType.INITIALIZATION_ERROR
+    ErrorType.REQUEST_PARSING_ERROR -> TransportErrorType.REQUEST_PARSING_ERROR
+    ErrorType.ERROR_STUB -> TransportErrorType.ERROR_STUB
+    ErrorType.VALIDATION_ERROR -> TransportErrorType.VALIDATION_ERROR
+    ErrorType.SERVER_ERROR -> TransportErrorType.SERVER_ERROR
+    ErrorType.FAIL_BUILD_REQUEST_MODEL -> TransportErrorType.FAIL_BUILD_REQUEST_MODEL
+}
+
 private fun toResult(state: State) : Result = when(state) {
+    State.INITIAL -> Result.ERROR
     State.SUCCESS -> Result.SUCCESS
-    State.STARTED -> Result.ERROR
+    State.RUNNING -> Result.ERROR
     State.FAILED -> Result.ERROR
 }

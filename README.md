@@ -1,3 +1,5 @@
+# For the [Kotlin Backend Developer](https://otus.ru/lessons/kotlin/) course
+
 # Opinion Service 
 
 The web service allows any user to publish a question with predefined list of answers.
@@ -29,3 +31,19 @@ I do not know, but I found a successful example - the [TruePublic](https://truep
 is very close to the desired service. 
 
 
+# Subprojects
+
+1. [app-kafka](app-kafka) Application with Kafka as a transport.
+1. [app-ktor](app-ktor) Ktor application
+1. [services](services) Service layer
+1. [common](common) Inner models
+1. [common-cor](common-cor) DSL library used to implement Chain of Responsibility pattern
+1. [docker](docker) Docker-compose configurations to run applications in containers   
+1. [logics](logics) Business logic
+1. [model-stubs](model-stubs) Stubs for inner models
+1. [rest](rest) Test HTTP requests
+1. [specs](specs) Open API service description
+1. [transport-mapping](transport-mapping) Mapping between transport and inner models
+1. [transport-openapi](transport-openapi) Transport models (generated with OpenAPI)
+1. [transport-openapi-stubs](transport-openapi-stubs) Stubs for transport models
+1. [validation](validation) Request validators

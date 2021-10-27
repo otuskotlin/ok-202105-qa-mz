@@ -45,8 +45,8 @@ dependencies {
     implementation(project(":transport-mapping"))
 
     // services
-    implementation(project(":app-services"))
-
+    implementation(project(":services"))
+    implementation(project(":logics"))
     // stubs
     implementation(project(":model-stubs"))
 

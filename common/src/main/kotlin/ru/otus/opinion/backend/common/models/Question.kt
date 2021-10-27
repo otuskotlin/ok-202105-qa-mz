@@ -3,7 +3,7 @@ package ru.otus.opinion.backend.common.models
 import java.time.Instant
 
 data class Question (
-    var questionId: String = "",
+    var questionId: QuestionId = QuestionId.EMPTY,
     var title: String = "",
     var content: String = "",
     var author: UserId = UserId.EMPTY,

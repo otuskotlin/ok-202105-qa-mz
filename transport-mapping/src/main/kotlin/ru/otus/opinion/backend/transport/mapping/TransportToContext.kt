@@ -1,33 +1,64 @@
 package ru.otus.opinion.backend.transport.mapping
 
+import ru.otus.opinion.backend.common.context.ProcessingMode
 import ru.otus.opinion.backend.common.context.RequestContext
+import ru.otus.opinion.backend.common.context.Stub
 import ru.otus.opinion.backend.common.models.*
 import ru.otus.opinion.openapi.models.CreateQuestionRequest
 import ru.otus.opinion.openapi.models.QuestionsRequest
+import ru.otus.opinion.openapi.models.Request
 import ru.otus.opinion.openapi.models.Visibility
 import java.time.Instant
 import java.time.ZonedDateTime
-import ru.otus.opinion.openapi.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.models.Pagination as PaginationTransport
 import ru.otus.opinion.openapi.models.Pagination.Relation as PaginationRelation
-import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
 import ru.otus.opinion.openapi.models.Permission as TransportPermission
+import ru.otus.opinion.openapi.models.ProcessingMode as TransportProcessingMode
+import ru.otus.opinion.openapi.models.Question as QuestionTransport
+import ru.otus.opinion.openapi.models.QuestionState as QuestionStateTransport
+import ru.otus.opinion.openapi.models.Stub as TransportStub
+
+fun RequestContext.setQuery(request: Request): RequestContext = apply {
+
+    fun failedToConvert(): RequestContext {
+        return addError(ServerError(
+            message = "Failed map request $request to inner model.",
+            level = ErrorLevel.ERROR,
+            errorType = ErrorType.FAIL_BUILD_REQUEST_MODEL))
+    }
+
+    try {
+        when(request) {
+            is CreateQuestionRequest -> setQuery(request)
+            is QuestionsRequest -> setQuery(request)
+            else -> failedToConvert()
+        }
+    } catch (ex: Throwable) {
+        failedToConvert()
+    }
+}
 
 fun RequestContext.setQuery(query: CreateQuestionRequest) = apply {
-    this.contextType = RequestContext.RequestType.CREATE
-    this.requestId = query.requestId ?: ""
-    this.requestQuestion = query.question?.toModel() ?: Question()
+    setBaseQuery(query)
+    requestType = RequestContext.RequestType.CREATE
+    requestQuestion = query.question?.toModel() ?: Question()
 }
 
 fun RequestContext.setQuery(query: QuestionsRequest) = apply {
-    this.contextType = RequestContext.RequestType.LIST
-    this.requestId = query.requestId ?: ""
-    this.pagination = query.pagination?.toModel() ?: Pagination()
+    setBaseQuery(query)
+    requestType = RequestContext.RequestType.LIST
+    pagination = query.pagination?.toModel() ?: Pagination()
+}
+
+fun RequestContext.setBaseQuery(query: Request) = apply {
+    requestId = RequestId(query.requestId ?: "")
+    processingMode = toModel(query.processingMode)
+    stub = toModel(query.stub)
 }
 
 private fun QuestionTransport.toModel() : Question {
     return Question (
-        questionId = questionId ?: "",
+        questionId = QuestionId(questionId ?: ""),
         title = title ?: "",
         content = content ?: "",
         author = author?.let { UserId(it) } ?: UserId.EMPTY,
@@ -71,4 +102,18 @@ private fun toModel(permission: TransportPermission?): Permission = when(permiss
     TransportPermission.UPDATE -> Permission.UPDATE
     TransportPermission.DELETE -> Permission.DELETE
     null -> Permission.default
+}
+
+
+fun toModel(mode: TransportProcessingMode?): ProcessingMode = when(mode) {
+    TransportProcessingMode.PROD -> ProcessingMode.PROD
+    TransportProcessingMode.TEST -> ProcessingMode.TEST
+    TransportProcessingMode.STUB -> ProcessingMode.STUB
+    null -> ProcessingMode.PROD
+}
+
+fun toModel(stub: TransportStub?): Stub = when(stub) {
+    TransportStub.SUCCESS -> Stub.SUCCESS
+    TransportStub.FAIL -> Stub.FAIL
+    null -> Stub.NONE
 }
