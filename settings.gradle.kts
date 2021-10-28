@@ -20,14 +20,15 @@ pluginManagement {
     }
 }
 
-include("common")
-include("transport-openapi")
-include("transport-mapping")
-include("model-stubs")
-include("app-ktor")
-include("services")
-include("transport-openapi-stubs")
-include("app-kafka")
-include("common-cor")
-include("logics")
-include("validation")
+
+include(":backend:apps:kafka")
+include(":backend:apps:ktor")
+include(":backend:models")
+include(":backend:dsl:cor")
+include(":backend:logics")
+include(":backend:services")
+include(":backend:transport:mapping")
+include(":backend:transport:openapi")
+include(":backend:validation")
+
+include(":multiplatform:common-mp")
