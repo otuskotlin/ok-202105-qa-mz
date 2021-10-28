@@ -30,5 +30,6 @@ include(":backend:services")
 include(":backend:transport:mapping")
 include(":backend:transport:openapi")
 include(":backend:validation")
+include(":backend:repo:api")
 
 include(":multiplatform:common-mp")
