@@ -1,4 +1,7 @@
+package ru.otus.opinion.repo.api.test
+
 import kotlinx.coroutines.runBlocking
+import org.junit.Test
 import ru.otus.opinion.models.Pagination
 import ru.otus.opinion.models.Question
 import ru.otus.opinion.models.Relation
@@ -9,15 +12,16 @@ import ru.otus.opinion.repo.api.SaveRequest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-abstract class ListTest {
+abstract class ListTestBase {
     abstract val repo: Repo
 
+    @Test
     fun listSuccess() {
         val questions = QuestionStubs.allQuestions()
         insertTestData(questions)
         val sortedIds = questions
-            .map { question -> question.questionId }
-            .sortedBy { id -> id.id }
+            .map { it.questionId }
+            .sortedBy { it.id }
             .toList()
         val firstId = sortedIds[0]
         val expectedSize = sortedIds.size - 1

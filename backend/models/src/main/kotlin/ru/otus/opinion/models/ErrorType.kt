@@ -6,5 +6,6 @@ enum class ErrorType {
     FAIL_BUILD_REQUEST_MODEL,
     ERROR_STUB,
     VALIDATION_ERROR,
+    DB_ERROR,
     SERVER_ERROR
 }
