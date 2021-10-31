@@ -1,8 +1,8 @@
 package ru.otus.opinion.transport.mapping
 
-import ru.otus.opinion.context.ProcessingMode
+import ru.otus.opinion.models.ProcessingMode
 import ru.otus.opinion.context.RequestContext
-import ru.otus.opinion.context.Stub
+import ru.otus.opinion.models.Stub
 import ru.otus.opinion.models.*
 import ru.otus.opinion.openapi.transport.models.CreateQuestionRequest
 import ru.otus.opinion.openapi.transport.models.QuestionsRequest

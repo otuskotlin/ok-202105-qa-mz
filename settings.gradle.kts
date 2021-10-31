@@ -24,6 +24,7 @@ pluginManagement {
 include(":backend:apps:kafka")
 include(":backend:apps:ktor")
 include(":backend:models")
+include(":backend:context")
 include(":backend:dsl:cor")
 include(":backend:logics")
 include(":backend:services")

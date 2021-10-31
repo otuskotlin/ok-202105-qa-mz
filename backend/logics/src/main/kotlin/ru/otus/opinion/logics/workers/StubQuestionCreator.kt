@@ -1,8 +1,8 @@
 package ru.otus.opinion.logics.workers
 
 import ru.otus.opinion.context.RequestContext
-import ru.otus.opinion.context.State
-import ru.otus.opinion.context.Stub
+import ru.otus.opinion.models.State
+import ru.otus.opinion.models.Stub
 import ru.otus.opinion.cor.dsl.builders.ChainBuilder
 import ru.otus.opinion.models.ErrorType
 import ru.otus.opinion.models.ServerError

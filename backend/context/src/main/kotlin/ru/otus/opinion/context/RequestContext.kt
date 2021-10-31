@@ -4,6 +4,11 @@ import ru.otus.opinion.models.*
 import java.time.Instant
 
 data class RequestContext (
+
+    /** Repos */
+
+
+    /** Models */
     var requestType: RequestType = RequestType.NONE,
     var processingMode: ProcessingMode = ProcessingMode.PROD,
     var stub: Stub = Stub.NONE,
@@ -15,6 +20,7 @@ data class RequestContext (
     var questions: MutableList<Question> = mutableListOf(),
     var errors: MutableList<ServerError> = mutableListOf(),
     override var state: State = State.INITIAL
+
 ) : Context {
     override fun addError(error: ServerError) = apply {
         errors.add(error)

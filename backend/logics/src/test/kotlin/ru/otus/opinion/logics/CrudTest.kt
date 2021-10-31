@@ -2,10 +2,10 @@ package ru.otus.opinion.logics
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import ru.otus.opinion.context.ProcessingMode
+import ru.otus.opinion.models.ProcessingMode
 import ru.otus.opinion.context.RequestContext
-import ru.otus.opinion.context.State
-import ru.otus.opinion.context.Stub
+import ru.otus.opinion.models.State
+import ru.otus.opinion.models.Stub
 import ru.otus.opinion.models.*
 import ru.otus.opinion.models.stubs.QuestionStubs
 import kotlin.test.assertEquals

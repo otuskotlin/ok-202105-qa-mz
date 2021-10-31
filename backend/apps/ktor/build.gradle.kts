@@ -40,6 +40,7 @@ dependencies {
 
     // transport models
     implementation(project(":backend:models"))
+    implementation(project(":backend:context"))
     implementation(project(":backend:transport:openapi"))
     implementation(project(":backend:transport:mapping"))
 

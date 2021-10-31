@@ -2,7 +2,7 @@ package ru.otus.opinion.transport.mapping
 
 import ru.otus.opinion.context.RequestContext
 import ru.otus.opinion.context.RequestContext.RequestType.*
-import ru.otus.opinion.context.State
+import ru.otus.opinion.models.State
 import ru.otus.opinion.models.*
 import ru.otus.opinion.models.ErrorLevel
 import ru.otus.opinion.openapi.transport.models.*

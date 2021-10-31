@@ -8,8 +8,10 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(project(":backend:models"))
+    implementation(project(":backend:context"))
     implementation(project(":backend:dsl:cor"))
     implementation(project(":backend:validation"))
+    implementation(project(":backend:repo:api"))
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))

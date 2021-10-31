@@ -3,7 +3,7 @@ package ru.otus.opinion.logics.validation
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import ru.otus.opinion.context.Context
-import ru.otus.opinion.context.State
+import ru.otus.opinion.models.State
 import ru.otus.opinion.cor.dsl.chain
 import ru.otus.opinion.models.ErrorType
 import ru.otus.opinion.models.ServerError
