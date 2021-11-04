@@ -8,7 +8,7 @@ import ru.otus.opinion.models.Relation
 import ru.otus.opinion.models.stubs.QuestionStubs
 import ru.otus.opinion.repo.api.ListRequest
 import ru.otus.opinion.repo.api.Repo
-import ru.otus.opinion.repo.api.SaveRequest
+import ru.otus.opinion.repo.api.CreateRequest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -37,7 +37,7 @@ abstract class ListTestBase {
     private fun insertTestData(questions: MutableList<Question>) {
         runBlocking {
             questions.forEach {
-                    question -> repo.save(SaveRequest(question))
+                    question -> repo.create(CreateRequest(question))
             }
         }
     }

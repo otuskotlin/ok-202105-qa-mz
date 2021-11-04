@@ -7,9 +7,13 @@ import org.ehcache.config.builders.CacheConfigurationBuilder
 import org.ehcache.config.builders.CacheManagerBuilder
 import org.ehcache.config.builders.ExpiryPolicyBuilder
 import org.ehcache.config.builders.ResourcePoolsBuilder
+import ru.otus.opinion.models.Language
 import ru.otus.opinion.models.Question
+import ru.otus.opinion.models.QuestionId
+import ru.otus.opinion.models.UserId
 import ru.otus.opinion.repo.api.*
 import java.time.Duration
+import java.util.*
 
 class CacheBasedRepo(
     private val ttl: Duration = Duration.ofMinutes(1)
@@ -34,14 +38,11 @@ class CacheBasedRepo(
     }
 
 
-    override suspend fun save(saveRequest: SaveRequest): SaveResponse {
-        val question = saveRequest.question
-        val id = question.questionId.id
-        if (id.isBlank()) {
-            return SaveResponse("Can not save question without ID.")
-        }
+    override suspend fun create(createRequest: CreateRequest): CreateResponse {
+        val id = UUID.randomUUID().toString()
+        val question = createRequest.question.copy(questionId = QuestionId(id = id))
         cache.put(id, question)
-        return SaveResponse(content = question)
+        return CreateResponse(content = question)
     }
 
     /**

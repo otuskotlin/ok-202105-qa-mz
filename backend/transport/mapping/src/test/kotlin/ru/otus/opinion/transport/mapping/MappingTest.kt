@@ -2,6 +2,7 @@ package ru.otus.opinion.transport.mapping
 
 import org.junit.Assert.assertTrue
 import ru.otus.opinion.context.RequestContext
+import ru.otus.opinion.context.RequestType
 import ru.otus.opinion.models.State
 import ru.otus.opinion.models.*
 import ru.otus.opinion.models.stubs.QuestionStubs
@@ -21,7 +22,7 @@ class MappingTest {
         val query = TransportStubs.createRequestA
 
         val ctx = RequestContext().setQuery(query)
-        assertEquals(RequestContext.RequestType.CREATE, ctx.requestType)
+        assertEquals(RequestType.CREATE, ctx.requestType)
         assertEquals(query.requestId, ctx.requestId.id)
 
         assertEquals(QuestionStubs.questionA, ctx.requestQuestion)
@@ -30,7 +31,7 @@ class MappingTest {
     @Test
     fun contextToTransportTest() {
         val ctx = RequestContext(
-            requestType = RequestContext.RequestType.CREATE,
+            requestType = RequestType.CREATE,
             requestId = RequestId("123"),
             startTime = Instant.parse("2021-08-07T13:04:11Z"),
             requestQuestion = Question(),

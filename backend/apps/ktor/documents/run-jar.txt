@@ -1,0 +1,3 @@
+https://ktor.io/docs/fatjar.html#run
+
+java -jar build/libs/ktor-0.0.1-all.jar

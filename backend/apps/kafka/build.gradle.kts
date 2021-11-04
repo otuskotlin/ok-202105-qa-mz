@@ -36,8 +36,6 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(project(":backend:models"))
-    implementation(project(":backend:context"))
-    implementation(project(":backend:logics"))
     implementation(project(":backend:services"))
     implementation(project(":backend:transport:mapping"))
     implementation(project(":backend:transport:openapi"))

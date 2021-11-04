@@ -1,11 +1,11 @@
 package ru.otus.opinion.repo.api
 
 interface Repo {
-    suspend fun save(saveRequest: SaveRequest): SaveResponse
+    suspend fun create(createRequest: CreateRequest): CreateResponse
     suspend fun list(listRequest: ListRequest): ListResponse
 
     object None: Repo {
-        override suspend fun save(saveRequest: SaveRequest): SaveResponse {
+        override suspend fun create(createRequest: CreateRequest): CreateResponse {
             TODO("Not yet implemented")
         }
 
