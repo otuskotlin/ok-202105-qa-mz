@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-abstract class SaveTestBase {
+abstract class CreateTestBase {
     abstract val repo: Repo
 
     @Test
