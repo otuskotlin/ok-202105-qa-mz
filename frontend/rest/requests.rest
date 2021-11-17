@@ -1,4 +1,4 @@
-# create question request
+### create question request in test mode
 POST http://localhost:8080/question/create
 Content-Type: application/json
 
@@ -16,7 +16,25 @@ Content-Type: application/json
   }
 }
 
-### request questions list
+### create question request in production mode
+POST http://localhost:8080/question/create
+Content-Type: application/json
+
+{
+"className": "CreateQuestionRequest",
+"requestId": "123",
+"processingMode": "prod",
+"question": {
+"questionId": "test-question-1",
+"title": "Main test question.",
+"content": "To Ktor or not to Ktor?",
+"author": "Bill Shake",
+"language": "English",
+"tags": ["test", "fun"]
+}
+}
+
+### request questions list in test mode
 POST http://localhost:8080/question/list
 Content-Type: application/json
 
@@ -24,6 +42,21 @@ Content-Type: application/json
   "className": "QuestionsRequest",
   "requestId": "2",
   "processingMode": "test",
+  "pagination": {
+    "objectsCount": 10,
+    "objectId": "0",
+    "relation": "before"
+  }
+}
+
+### request questions list in production mode
+POST http://localhost:8080/question/list
+Content-Type: application/json
+
+{
+  "className": "QuestionsRequest",
+  "requestId": "2",
+  "processingMode": "prod",
   "pagination": {
     "objectsCount": 10,
     "objectId": "0",

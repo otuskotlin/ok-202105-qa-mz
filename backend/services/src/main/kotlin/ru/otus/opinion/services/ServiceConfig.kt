@@ -1,6 +1,7 @@
 package ru.otus.opinion.services
 
 import ru.otus.opinion.repo.api.Repo
+import ru.otus.opinion.repo.cassandra.schema.SchemaInitializer
 import ru.otus.opinion.repo.inmemory.CacheBasedRepo
 
 class ServiceConfig (
@@ -9,7 +10,7 @@ class ServiceConfig (
 ) {
     companion object {
         fun getServiceConfig() = ServiceConfig(
-            prodRepo = CacheBasedRepo(),
+            prodRepo = SchemaInitializer().init(),
             testRepo = CacheBasedRepo()
         )
     }

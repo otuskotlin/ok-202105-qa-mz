@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":backend:dsl:cor"))
     implementation(project(":backend:models"))
     implementation(project(":backend:repo:api"))
+    implementation(project(":backend:repo:cassandra"))
     implementation(project(":backend:repo:inmemory"))
     implementation(project(":backend:validation"))
 
