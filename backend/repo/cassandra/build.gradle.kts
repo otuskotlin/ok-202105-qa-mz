@@ -1,7 +1,12 @@
 plugins {
+    application
     kotlin("jvm")
     // annotations processing - generate source code from annotations
     kotlin("kapt")
+}
+
+application {
+    mainClass.set("ru.otus.opinion.repo.cassandra.ApplicationKt")
 }
 
 dependencies {
@@ -19,6 +24,7 @@ dependencies {
 
     // core driver
     implementation("com.datastax.oss:java-driver-core:$cassandraDriverVersion")
+    //implementation("com.datastax.cassandra:cassandra-driver-core:$cassandraDriverVersion")
     // CQL query builder
     implementation("com.datastax.oss:java-driver-query-builder:$cassandraDriverVersion")
 
