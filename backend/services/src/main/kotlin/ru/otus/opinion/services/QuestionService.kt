@@ -10,5 +10,8 @@ interface QuestionService {
         fun getService() = QuestionServiceImpl(
             config = ServiceConfig.getServiceConfig()
         )
+        fun getTestService() = QuestionServiceImpl(
+            config = ServiceConfig.getTestServiceConfig()
+        )
     }
 }

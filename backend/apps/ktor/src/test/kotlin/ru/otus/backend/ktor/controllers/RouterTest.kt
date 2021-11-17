@@ -1,9 +1,9 @@
 package ru.otus.backend.ktor.controllers
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import ru.otus.opinion.ktor.configs.AppConfig
 import ru.otus.opinion.ktor.module
 import ru.otus.opinion.openapi.transport.models.Request
 import kotlin.test.assertEquals
@@ -22,7 +22,9 @@ abstract class RouterTest {
         path: String,
         crossinline block: T.() -> Unit
     ) {
-        withTestApplication(Application::module) {
+        withTestApplication({
+            module(AppConfig.TEST_CONFIG)
+        }) {
             handleRequest(HttpMethod.Post, path) {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
                 setBody(body)

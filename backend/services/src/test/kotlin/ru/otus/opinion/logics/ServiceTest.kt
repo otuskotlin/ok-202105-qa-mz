@@ -6,14 +6,11 @@ import ru.otus.opinion.context.RequestContext
 import ru.otus.opinion.context.RequestType
 import ru.otus.opinion.models.*
 import ru.otus.opinion.models.stubs.QuestionStubs
-import ru.otus.opinion.repo.inmemory.CacheBasedRepo
-import ru.otus.opinion.services.QuestionServiceImpl
-import ru.otus.opinion.services.ServiceConfig
+import ru.otus.opinion.services.QuestionService
 import kotlin.test.assertEquals
 
 class ServiceTest {
-    private val config = ServiceConfig(prodRepo = CacheBasedRepo(), testRepo = CacheBasedRepo())
-    private val service = QuestionServiceImpl(config)
+    private val service = QuestionService.getTestService()
 
     @Test
     fun `test request with wrong type`() {

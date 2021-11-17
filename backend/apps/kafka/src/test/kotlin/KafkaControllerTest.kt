@@ -13,6 +13,7 @@ import ru.otus.opinion.openapi.transport.models.Discriminable
 import ru.otus.opinion.openapi.transport.models.Response
 import ru.otus.opinion.openapi.transport.models.Result
 import ru.otus.opinion.openapi.transport.models.stubs.Stubs
+import ru.otus.opinion.services.QuestionService
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -29,6 +30,7 @@ class KafkaControllerTest {
         val config = KafkaConfig(
             kafkaConsumer = consumer,
             kafkaProducer = producer,
+            service = QuestionService.getTestService()
         )
         val app = KafkaController(config)
         val request = Stubs.createRequestA
