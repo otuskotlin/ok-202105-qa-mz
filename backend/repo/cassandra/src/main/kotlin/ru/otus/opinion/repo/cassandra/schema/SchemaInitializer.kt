@@ -8,11 +8,13 @@ import ru.otus.opinion.repo.cassandra.dao.QuestionDaoFactoryBuilder
 class SchemaInitializer {
 
     /**
+     * Check db schema and create tables if required.
      * Build repository implementation based on [CASSANDRA_PROPERTIES_FILE].
      */
     fun init(): CassandraRepo = init(cassandraProperties())
 
     /**
+     * Check db schema and create tables if required.
      * Build repository implementation based on provided properties.
      */
     fun init(properties: CassandraProperties): CassandraRepo {
