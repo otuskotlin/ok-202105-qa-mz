@@ -40,7 +40,7 @@ is very close to the desired service.
 1. [backend/dsl/cor](backend/dsl/cor) DSL library used to implement Chain of Responsibility pattern
 1. [docker](backend/docker) Docker-compose configurations to run applications in containers   
 1. [backend/logics](backend/logics) Business logic
-1. [frontend/rest](frontend/rest) Test HTTP requests
+1. [multiplatform/rest](multiplatform/rest) Test HTTP requests
 1. [multiplatform/specs](multiplatform/specs) Open API service description
 1. [backend/transport/mapping](backend/transport/mapping) Mapping between transport and inner models
 1. [backend/transport/openapi](backend/transport/openapi) Transport models (generated with OpenAPI), and their stubs
