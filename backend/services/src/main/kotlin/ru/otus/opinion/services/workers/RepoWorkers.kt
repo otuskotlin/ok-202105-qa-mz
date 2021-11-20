@@ -19,7 +19,7 @@ internal fun ChainBuilder<ServiceContext>.repoCreate() = worker {
             responseQuestion = question
         } else {
             state = State.FAILED
-            response.errors.forEach { addError(it) }
+            addErrors(response.errors)
         }
     }
 }
@@ -35,7 +35,7 @@ internal fun ChainBuilder<ServiceContext>.repoList() = worker {
             questions.addAll(questionsList)
         } else {
             state = State.FAILED
-            response.errors.forEach { addError(it) }
+            addErrors(response.errors)
         }
     }
 }

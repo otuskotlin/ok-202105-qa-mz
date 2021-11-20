@@ -1,12 +1,7 @@
 plugins {
-    application
     kotlin("jvm")
     // annotations processing - generate source code from annotations
     kotlin("kapt")
-}
-
-application {
-    mainClass.set("ru.otus.opinion.repo.cassandra.ApplicationKt")
 }
 
 dependencies {
