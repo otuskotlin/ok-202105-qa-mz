@@ -9,6 +9,9 @@ plugins {
     application
     kotlin("jvm")
     id("com.bmuschko.docker-java-application")
+
+    /** Required to build fat jar. */
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 application {
@@ -31,6 +34,17 @@ docker {
     }
 }
 
+/**
+ * Build fat jar, and put it in build/libs folder.
+ */
+tasks {
+    shadowJar {
+        manifest {
+            attributes(Pair("Main-Class", "com.example.ApplicationKt"))
+        }
+    }
+}
+
 dependencies {
     implementation(ktor("server-core"))
     implementation(ktor("server-netty"))
@@ -38,14 +52,10 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-    // transport models
     implementation(project(":backend:models"))
+    implementation(project(":backend:services"))
     implementation(project(":backend:transport:openapi"))
     implementation(project(":backend:transport:mapping"))
-
-    // services
-    implementation(project(":backend:services"))
-    implementation(project(":backend:logics"))
 
     testImplementation(ktor("server-test-host"))
     testImplementation(kotlin("test-junit"))

@@ -1,40 +1,39 @@
 package ru.otus.opinion.transport.mapping
 
-import ru.otus.opinion.context.RequestContext
-import ru.otus.opinion.context.RequestContext.RequestType.*
-import ru.otus.opinion.context.State
+import ru.otus.opinion.context.IRequestContext
+import ru.otus.opinion.context.RequestType.*
 import ru.otus.opinion.models.*
 import ru.otus.opinion.models.ErrorLevel
 import ru.otus.opinion.openapi.transport.models.*
+import ru.otus.opinion.openapi.transport.models.ErrorLevel as TransportErrorLevel
+import ru.otus.opinion.openapi.transport.models.ErrorType as TransportErrorType
 import ru.otus.opinion.openapi.transport.models.Permission as PermissionTransport
 import ru.otus.opinion.openapi.transport.models.Question as QuestionTransport
 import ru.otus.opinion.openapi.transport.models.QuestionState as QuestionStateTransport
 import ru.otus.opinion.openapi.transport.models.ServerError as TransportError
-import ru.otus.opinion.openapi.transport.models.ErrorLevel as TransportErrorLevel
-import ru.otus.opinion.openapi.transport.models.ErrorType as TransportErrorType
 
 
-fun RequestContext.toResponse() = when(requestType) {
+fun IRequestContext.toResponse() = when(requestType) {
     LIST -> toListQuestionsResponse()
     CREATE -> toCreateQuestionResponse()
     NONE -> toEmptyResponse()
 }
 
-fun RequestContext.toListQuestionsResponse() = QuestionsResponse(
+fun IRequestContext.toListQuestionsResponse() = QuestionsResponse(
     requestId = requestId.id,
     result = toResult(state),
     errors = errors.map(ServerError::toTransport),
     questions = questions.map(Question::toTransport)
 )
 
-fun RequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
+fun IRequestContext.toCreateQuestionResponse() = CreateQuestionResponse (
     requestId = requestId.id,
     result = toResult(state),
     errors = errors.map(ServerError::toTransport),
     question = responseQuestion.toTransport()
 )
 
-fun RequestContext.toEmptyResponse() : EmptyResponse {
+fun IRequestContext.toEmptyResponse() : EmptyResponse {
     errors.add(ServerError(level = ErrorLevel.ERROR, message = "Failed to process request."))
     return EmptyResponse(
         requestId = requestId.id,
@@ -97,6 +96,7 @@ private fun ErrorType.toTransport(): TransportErrorType = when(this) {
     ErrorType.VALIDATION_ERROR -> TransportErrorType.VALIDATION_ERROR
     ErrorType.SERVER_ERROR -> TransportErrorType.SERVER_ERROR
     ErrorType.FAIL_BUILD_REQUEST_MODEL -> TransportErrorType.FAIL_BUILD_REQUEST_MODEL
+    ErrorType.DB_ERROR -> TransportErrorType.DB_ERROR
 }
 
 private fun toResult(state: State) : Result = when(state) {

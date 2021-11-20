@@ -8,22 +8,15 @@ import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
-import ru.otus.opinion.bakend.services.QuestionService
-import ru.otus.opinion.bakend.services.QuestionServiceImpl
-import ru.otus.opinion.logics.Crud
+import ru.otus.opinion.services.QuestionService
 import java.util.*
 
 class KafkaConfig(
-    val kafkaHosts: List<String> = KAFKA_HOSTS,
+    private val kafkaHosts: List<String> = KAFKA_HOSTS,
     val kafkaTopicIn: String = KAFKA_TOPIC_IN,
     val kafkaTopicOut: String = KAFKA_TOPIC_OUT,
-    val kafkaGroupId: String = KAFKA_GROUP_ID,
-//    val contextConfig: ContextConfig = ContextConfig(
-//        repoProd = RepoAdInMemory(initObjects = listOf(), ttl = Duration.ofHours(1)),
-//        repoTest = RepoAdInMemory(initObjects = listOf()),
-//    ),
-    private val crud: Crud = Crud(),
-    val service: QuestionService = QuestionServiceImpl(crud = crud),
+    private val kafkaGroupId: String = KAFKA_GROUP_ID,
+    val service: QuestionService = QuestionService.getService(),
     val kafkaConsumer: Consumer<String, String> = kafkaConsumer(kafkaHosts, kafkaGroupId),
     val kafkaProducer: Producer<String, String> = kafkaProducer(kafkaHosts),
 ) {

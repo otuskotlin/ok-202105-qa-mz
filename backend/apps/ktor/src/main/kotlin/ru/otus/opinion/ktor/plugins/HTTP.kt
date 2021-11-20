@@ -29,5 +29,4 @@ fun Application.configureHTTP() {
         allowCredentials = true
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
-
 }

@@ -3,15 +3,13 @@ package ru.otus.opinion.ktor.plugins
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import ru.otus.opinion.ktor.configs.AppConfig
+import ru.otus.opinion.services.QuestionService
 import ru.otus.opinion.ktor.controllers.QuestionController
 import ru.otus.opinion.ktor.controllers.QuestionControllerImpl
-import ru.otus.opinion.bakend.services.QuestionService
-import ru.otus.opinion.bakend.services.QuestionServiceImpl
-import ru.otus.opinion.logics.Crud
 
-fun Application.configureRouting() {
-    val crud = Crud()
-    val questionService: QuestionService = QuestionServiceImpl(crud)
+fun Application.configureRouting(appConfig: AppConfig) {
+    val questionService = appConfig.service
     val questionController: QuestionController = QuestionControllerImpl(questionService)
 
     routing {

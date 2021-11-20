@@ -1,8 +1,9 @@
 package ru.otus.opinion.transport.mapping
 
-import ru.otus.opinion.context.ProcessingMode
+import ru.otus.opinion.models.ProcessingMode
 import ru.otus.opinion.context.RequestContext
-import ru.otus.opinion.context.Stub
+import ru.otus.opinion.context.RequestType
+import ru.otus.opinion.models.Stub
 import ru.otus.opinion.models.*
 import ru.otus.opinion.openapi.transport.models.CreateQuestionRequest
 import ru.otus.opinion.openapi.transport.models.QuestionsRequest
@@ -40,13 +41,13 @@ fun RequestContext.setQuery(request: Request): RequestContext = apply {
 
 fun RequestContext.setQuery(query: CreateQuestionRequest) = apply {
     setBaseQuery(query)
-    requestType = RequestContext.RequestType.CREATE
+    requestType = RequestType.CREATE
     requestQuestion = query.question?.toModel() ?: Question()
 }
 
 fun RequestContext.setQuery(query: QuestionsRequest) = apply {
     setBaseQuery(query)
-    requestType = RequestContext.RequestType.LIST
+    requestType = RequestType.LIST
     pagination = query.pagination?.toModel() ?: Pagination()
 }
 

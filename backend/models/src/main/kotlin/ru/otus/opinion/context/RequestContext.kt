@@ -4,26 +4,23 @@ import ru.otus.opinion.models.*
 import java.time.Instant
 
 data class RequestContext (
-    var requestType: RequestType = RequestType.NONE,
-    var processingMode: ProcessingMode = ProcessingMode.PROD,
-    var stub: Stub = Stub.NONE,
-    var requestId: RequestId = RequestId.EMPTY,
-    var startTime: Instant = Instant.now(),
-    var requestQuestion: Question = Question(),
-    var responseQuestion: Question = Question(),
-    var pagination: Pagination = Pagination(),
-    var questions: MutableList<Question> = mutableListOf(),
-    var errors: MutableList<ServerError> = mutableListOf(),
+    override var requestType: RequestType = RequestType.NONE,
+    override var processingMode: ProcessingMode = ProcessingMode.PROD,
+    override var stub: Stub = Stub.NONE,
+    override var requestId: RequestId = RequestId.EMPTY,
+    override var startTime: Instant = Instant.now(),
+    override var requestQuestion: Question = Question(),
+    override var responseQuestion: Question = Question(),
+    override var pagination: Pagination = Pagination(),
+    override var questions: MutableList<Question> = mutableListOf(),
+    override var errors: MutableList<ServerError> = mutableListOf(),
     override var state: State = State.INITIAL
-) : Context {
+
+) : IRequestContext {
     override fun addError(error: ServerError) = apply {
         errors.add(error)
         if (error.level == ErrorLevel.ERROR) {
             state = State.FAILED
         }
-    }
-
-    enum class RequestType {
-        NONE, LIST, CREATE
     }
 }
