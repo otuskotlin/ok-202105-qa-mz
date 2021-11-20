@@ -23,5 +23,4 @@ data class RequestContext (
             state = State.FAILED
         }
     }
-
 }

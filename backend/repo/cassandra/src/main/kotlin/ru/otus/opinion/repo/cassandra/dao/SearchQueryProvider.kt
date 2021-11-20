@@ -6,6 +6,7 @@ import com.datastax.oss.driver.api.mapper.entity.EntityHelper
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder
 import ru.otus.opinion.models.Pagination
 import ru.otus.opinion.repo.cassandra.dto.QuestionDto
+import ru.otus.opinion.repo.cassandra.schema.SchemaInitializer
 import java.lang.IllegalStateException
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
@@ -19,7 +20,7 @@ class SearchQueryProvider(
         var select = entityHelper.selectStart().allowFiltering()
         // TODO implement pagination.direction support
         select = select
-            .whereColumn(QuestionDto.ID_COLUMN)
+            .whereColumn(SchemaInitializer.ID_COLUMN)
             .isGreaterThan(QueryBuilder.literal(pagination.id))
         select = select.limit(pagination.count)
 
