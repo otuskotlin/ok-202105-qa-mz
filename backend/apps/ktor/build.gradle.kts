@@ -12,6 +12,9 @@ plugins {
 
     /** Required to build fat jar. */
     id("com.github.johnrengelman.shadow") version "7.0.0"
+
+    // add if use Kotlin serialization
+    // id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 application {
@@ -46,10 +49,18 @@ tasks {
 }
 
 dependencies {
-    implementation(ktor("server-core"))
-    implementation(ktor("server-netty"))
-    implementation(ktor("jackson"))
 
+    // Ktor core components
+    implementation(ktor("server-core"))
+
+    // Netty engine
+    implementation(ktor("server-netty"))
+
+    implementation(ktor("jackson"))
+    // Ktor own serialization
+    //implementation(ktor("serialization"))
+
+    // An slf4j implementation
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     implementation(project(":backend:models"))
@@ -57,7 +68,9 @@ dependencies {
     implementation(project(":backend:transport:openapi"))
     implementation(project(":backend:transport:mapping"))
 
+    // Allows to test parts of Ktor application without having to use the whole HTTP stack in the process
     testImplementation(ktor("server-test-host"))
+
     testImplementation(kotlin("test-junit"))
 //    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
 }
