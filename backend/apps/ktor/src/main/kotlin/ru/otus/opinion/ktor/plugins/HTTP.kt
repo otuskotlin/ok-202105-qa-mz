@@ -2,8 +2,11 @@ package ru.otus.opinion.ktor.plugins
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import freemarker.cache.ClassTemplateLoader
+import freemarker.core.HTMLOutputFormat
 import io.ktor.application.*
 import io.ktor.features.*
+import io.ktor.freemarker.*
 import io.ktor.http.*
 import io.ktor.jackson.*
 
@@ -11,7 +14,6 @@ fun Application.configureHTTP() {
     install(DefaultHeaders)
     install(CallLogging)
     install(AutoHeadResponse)
-    //install(Routing)
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
@@ -28,5 +30,9 @@ fun Application.configureHTTP() {
         header("MyCustomHeader")
         allowCredentials = true
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
+    }
+    install(FreeMarker) {
+        templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
+        outputFormat = HTMLOutputFormat.INSTANCE
     }
 }

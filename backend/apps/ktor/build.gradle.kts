@@ -60,6 +60,8 @@ dependencies {
     // Ktor own serialization
     //implementation(ktor("serialization"))
 
+    implementation(ktor("freemarker"))
+    
     // An slf4j implementation
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 

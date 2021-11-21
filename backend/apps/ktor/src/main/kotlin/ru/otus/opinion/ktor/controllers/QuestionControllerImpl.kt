@@ -9,26 +9,39 @@ import ru.otus.opinion.context.RequestType
 import ru.otus.opinion.models.ErrorLevel
 import ru.otus.opinion.models.ErrorType
 import ru.otus.opinion.models.ServerError
-import ru.otus.opinion.transport.mapping.setQuery
-import ru.otus.opinion.transport.mapping.toResponse
+import ru.otus.opinion.openapi.transport.models.*
 import ru.otus.opinion.services.QuestionService
-import ru.otus.opinion.openapi.transport.models.CreateQuestionRequest
-import ru.otus.opinion.openapi.transport.models.QuestionsRequest
-import ru.otus.opinion.openapi.transport.models.Request
+import ru.otus.opinion.transport.mapping.setQuery
+import ru.otus.opinion.transport.mapping.toListQuestionsResponse
+import ru.otus.opinion.transport.mapping.toResponse
+import java.util.*
 
 class QuestionControllerImpl(private val questionService: QuestionService) : QuestionController {
 
-    override suspend fun create(call: ApplicationCall) = perform(call, RequestType.CREATE) {
-        call.receive<CreateQuestionRequest>()
+    override suspend fun landingPageData(): List<Question> {
+        val requestId = UUID.randomUUID().toString()
+        val pagination = Pagination(objectsCount = 3, objectId = "", relation = Pagination.Relation.AFTER)
+        val landingPageRequest = QuestionsRequest(
+            requestId = requestId,
+            processingMode = ProcessingMode.PROD,
+            pagination = pagination
+        )
+        val ctx = perform(RequestType.LIST) { landingPageRequest }
+        return ctx.toListQuestionsResponse().questions ?: emptyList()
     }
 
-    override suspend fun list(call: ApplicationCall) = perform(call, RequestType.LIST) {
-        call.receive<QuestionsRequest>()
+    override suspend fun create(call: ApplicationCall) {
+        val ctx = perform(RequestType.CREATE) { call.receive<CreateQuestionRequest>() }
+        call.respond(ctx.toResponse())
     }
 
-    private suspend fun perform(call: ApplicationCall,
-                                requestType: RequestType,
-                                parse: suspend () -> Request) {
+    override suspend fun list(call: ApplicationCall) {
+        val ctx = perform(RequestType.LIST) { call.receive<QuestionsRequest>()}
+        call.respond(ctx.toResponse())
+    }
+
+    private suspend fun perform(requestType: RequestType,
+                                parse: suspend () -> Request): RequestContext {
         val ctx = RequestContext(requestType = requestType)
         try {
             val request : Request = parse()
@@ -45,7 +58,7 @@ class QuestionControllerImpl(private val questionService: QuestionService) : Que
         } catch (ex: Throwable) {
             ctx.addError(ServerError(ex))
         }
-        call.respond(ctx.toResponse())
+        return ctx
     }
 }
 
