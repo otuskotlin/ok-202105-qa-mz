@@ -7969,6 +7969,12 @@ tough-cookie@~2.5.0:
     psl "^1.1.28"
     punycode "^2.1.1"
 
+"transport-models@file:../multiplatform/build/libs/transportModels":
+  version "1.0.0"
+
+"transport-models@file:../multiplatform/build/libs/transportModels/":
+  version "1.0.0"
+
 tryer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/tryer/-/tryer-1.0.1.tgz"

@@ -9,7 +9,7 @@
       <br> <br>
       Question
       <br> <br>
-      <textarea rows = "30" cols="200" name="content" v-model="question.content">Question</textarea>
+      <textarea rows = "20" cols="100" name="content" v-model="question.content">Question</textarea>
       <br> <br>
       <label>
         Question Tags
@@ -27,15 +27,14 @@
 </template>
 
 <script>
+import {ru} from "transport-models/opinion-multiplatform";
 
 export default {
   name: "CreateQuestion",
-  data(){
+  data() {
+    const question = new ru.otus.opinion.common.models.Test("", "");
     return {
-      question: {
-        title: null,
-        content: null
-      }
+      question: question
     }
   },
   methods: {

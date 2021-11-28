@@ -3,11 +3,10 @@ plugins {
 }
 
 kotlin {
-    /* Targets configuration omitted. 
-    *  To find out how to configure the targets, please follow the link:
-    *  https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#setting-up-targets */
-    js {
-        browser()
+    js(IR) {
+        browser {
+            binaries.executable()
+        }
     }
     jvm {}
 
@@ -52,5 +51,23 @@ kotlin {
         tasks.withType<Test>().configureEach {
             useJUnitPlatform()
         }
+    }
+}
+
+tasks {
+    build {
+        /* Copy transport models and package.json to a folder, to be able install them as a package with yarn. */
+        doLast {
+            copy {
+                from("$buildDir/processedResources/js/main")
+                include("package.json")
+                into("$buildDir/libs/transportModels")
+            }
+            copy {
+                from("$buildDir/compileSync/main/productionExecutable/kotlin")
+                into("$buildDir/libs/transportModels")
+            }
+        }
+        finalizedBy(":frontend:addTransportModels")
     }
 }
