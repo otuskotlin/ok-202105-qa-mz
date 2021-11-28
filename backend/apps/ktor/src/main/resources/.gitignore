@@ -1,0 +1,4 @@
+.DS_Store
+
+# this folder contains bundled frontend app, built in the frontend sub-project
+/dist

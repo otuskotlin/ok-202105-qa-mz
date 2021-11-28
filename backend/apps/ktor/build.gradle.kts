@@ -47,6 +47,7 @@ tasks {
         }
     }
     build {
+        dependsOn(":frontend:build")
         dependsOn(":frontend:copyVueToKtor")
     }
 }
