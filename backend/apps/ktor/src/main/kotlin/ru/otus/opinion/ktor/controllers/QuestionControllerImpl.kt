@@ -18,7 +18,7 @@ import java.util.*
 
 class QuestionControllerImpl(private val questionService: QuestionService) : QuestionController {
 
-    override suspend fun landingPageData(): List<Question> {
+    override suspend fun defaultQuestions(): List<Question> {
         val requestId = UUID.randomUUID().toString()
         val pagination = Pagination(objectsCount = 3, objectId = "", relation = Pagination.Relation.AFTER)
         val landingPageRequest = QuestionsRequest(

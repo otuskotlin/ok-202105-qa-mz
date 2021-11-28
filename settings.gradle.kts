@@ -34,4 +34,5 @@ include(":backend:repo:api")
 include(":backend:repo:cassandra")
 include(":backend:repo:inmemory")
 
-include(":multiplatform:common-mp")
+include(":multiplatform:common")
+include(":frontend")

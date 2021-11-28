@@ -32,7 +32,7 @@ fun Application.configureHTTP() {
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
     install(FreeMarker) {
-        templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
+        templateLoader = ClassTemplateLoader(this::class.java.classLoader, "web/templates")
         outputFormat = HTMLOutputFormat.INSTANCE
     }
 }

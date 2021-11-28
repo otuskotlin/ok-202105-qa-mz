@@ -46,6 +46,9 @@ tasks {
             attributes(Pair("Main-Class", "com.example.ApplicationKt"))
         }
     }
+    build {
+        dependsOn(":frontend:copyVueToKtor")
+    }
 }
 
 dependencies {
