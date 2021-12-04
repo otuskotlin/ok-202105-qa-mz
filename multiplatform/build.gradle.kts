@@ -1,5 +1,7 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
+    id("org.openapi.generator")
 }
 
 kotlin {
@@ -13,9 +15,12 @@ kotlin {
     val kotestVersion: String by project
 
     sourceSets {
+        val serializationVersion: String by project
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
             }
         }
         val commonTest by getting {
@@ -54,6 +59,36 @@ kotlin {
     }
 }
 
+
+openApiValidate {
+    inputSpec.set("$projectDir/specs/api.yaml")
+    recommend.set(true)
+}
+
+openApiGenerate {
+    inputSpec.set("$rootDir/multiplatform/specs/api.yaml")
+
+    generatorName.set("kotlin")
+    library.set("multiplatform")
+
+    generateApiDocumentation.set(true)
+    outputDir.set("$projectDir")
+    packageName.set("generated")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "string",
+            "enumPropertyNaming" to "UPPERCASE",
+            "collectionType" to "list",
+        )
+    )
+
+    globalProperties.apply {
+        put("models", "")
+        put("modelDocs", "true")
+    }
+}
+
 tasks {
     build {
         /* Copy transport models and package.json to a folder, to be able install them as a package with yarn. */
@@ -68,6 +103,6 @@ tasks {
                 into("$buildDir/libs/transportModels")
             }
         }
-        finalizedBy(":frontend:addTransportModels")
+        //finalizedBy(":frontend:addTransportModels")
     }
 }

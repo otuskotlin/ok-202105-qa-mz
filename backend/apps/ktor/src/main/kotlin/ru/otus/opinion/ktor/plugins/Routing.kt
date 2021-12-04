@@ -19,6 +19,7 @@ fun Application.configureRouting(appConfig: AppConfig) {
             resources("web/static")
             resources("web/images")
             resources("web/dist")
+            resources("web/css")
             /* spa on vue */
             resource("create_question", "web/dist/index.html")
             defaultResource("web/static/index.html")

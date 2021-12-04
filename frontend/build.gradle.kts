@@ -17,20 +17,6 @@ frontend {
 }
 
 tasks.register<Copy>("copyVueToKtor") {
-    from("$projectDir/dist/")
+    from("$projectDir/dist")
     into("../backend/apps/ktor/src/main/resources/web/dist/")
-}
-
-/* Install multiplatform's 'transport-models' package with yarn. */
-tasks.register<Exec>("addTransportModels") {
-    outputs.upToDateWhen { false }
-    workingDir = projectDir
-    commandLine("yarn", "remove", "transport-models")
-    commandLine("yarn", "add", "file:../multiplatform/build/libs/transportModels/")
-}
-
-tasks {
-    build {
-        dependsOn(":multiplatform:build")
-    }
 }

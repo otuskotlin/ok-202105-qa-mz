@@ -20,7 +20,7 @@ class QuestionControllerImpl(private val questionService: QuestionService) : Que
 
     override suspend fun defaultQuestions(): List<Question> {
         val requestId = UUID.randomUUID().toString()
-        val pagination = Pagination(objectsCount = 3, objectId = "", relation = Pagination.Relation.AFTER)
+        val pagination = Pagination(objectsCount = 10, objectId = "", relation = Pagination.Relation.AFTER)
         val landingPageRequest = QuestionsRequest(
             requestId = requestId,
             processingMode = ProcessingMode.PROD,

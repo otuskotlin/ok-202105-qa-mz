@@ -1,0 +1,46 @@
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: lavender;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 46px;
+}
+
+#navbar li {
+    float: left;
+}
+
+#navbar li a {
+    display: block;
+    color: darkblue;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#navbar li img {
+    margin: 0;
+    padding: 0;
+    width: 46px;
+    height: 46px;
+}
+
+#navbar li a:hover:not(.active) {
+    background-color: azure;
+}
+
+#navbar .active {
+    background-color: cornsilk;
+}
+
+body {
+    margin-left: 0;
+}
+
+main {
+    margin-top: 46px;
+}

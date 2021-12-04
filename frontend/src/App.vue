@@ -1,18 +1,14 @@
 <template>
-<!--  <img alt="Vue logo" src="./assets/logo.png">-->
-<!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <CreateQuestion/>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import CreateQuestion from "@/components/CreateQuestionForm";
 
 export default {
   name: 'App',
   components: {
     CreateQuestion,
-    // HelloWorld
   }
 }
 </script>

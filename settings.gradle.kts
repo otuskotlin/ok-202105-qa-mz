@@ -19,6 +19,7 @@ pluginManagement {
         id("org.openapi.generator") version openApiVersion
         id("com.bmuschko.docker-java-application") version bmuschkoVersion
         id("org.siouan.frontend-jdk11") version siouanFrontendVersion
+        kotlin("plugin.serialization") version kotlinVersion
     }
 }
 
