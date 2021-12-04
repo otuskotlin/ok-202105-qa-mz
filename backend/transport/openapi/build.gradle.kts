@@ -5,7 +5,7 @@ plugins {
 }
 
 openApiValidate {
-    inputSpec.set("$rootDir/specs/client-api.yaml")
+    inputSpec.set("$rootDir/multiplatform/specs/api.yaml")
     recommend.set(true)
 }
 

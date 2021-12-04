@@ -13,7 +13,7 @@ import ru.otus.opinion.openapi.transport.models.QuestionState as QuestionStateTr
 import ru.otus.opinion.openapi.transport.models.ServerError as TransportError
 
 
-fun IRequestContext.toResponse() = when(requestType) {
+fun IRequestContext.toResponse(): Response = when(requestType) {
     LIST -> toListQuestionsResponse()
     CREATE -> toCreateQuestionResponse()
     NONE -> toEmptyResponse()

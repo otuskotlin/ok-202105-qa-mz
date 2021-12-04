@@ -256,24 +256,21 @@ components:
     Permission:
       description: Which operations are granted to client.
       type: string
-      enum: [READ, UPDATE, DELETE]
+      enum: [read, update, delete]
 
     Visibility:
       description: |
         Grant permissions to observe an object.
         Used on server side to deside if an object could be provided to a user.
       type: string
-      enum:
-        - OWNER_ONLY
-        - REGISTERED_ONLY
-        - PUBLIC
+      enum: [owner_only, registered_only, public]
 
     Result:
       description: Result of request processing.
       type: string
-      enum: [ SUCCESS, ERROR ]
+      enum: [ success, error ]
 
     QuestionState:
       description: Question lifecycle state.
       type: string
-      enum: [ PROPOSED, MODERATED, ACCEPTED, OPENED, CLOSED ]
+      enum: [ proposed, moderated, accepted, opened, closed ]

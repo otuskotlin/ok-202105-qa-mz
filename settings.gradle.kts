@@ -12,11 +12,14 @@ pluginManagement {
         val kotlinVersion: String by settings
         val openApiVersion: String by settings
         val bmuschkoVersion: String by settings
+        val siouanFrontendVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
         id("org.openapi.generator") version openApiVersion
         id("com.bmuschko.docker-java-application") version bmuschkoVersion
+        id("org.siouan.frontend-jdk11") version siouanFrontendVersion
+        kotlin("plugin.serialization") version kotlinVersion
     }
 }
 
@@ -34,4 +37,5 @@ include(":backend:repo:api")
 include(":backend:repo:cassandra")
 include(":backend:repo:inmemory")
 
-include(":multiplatform:common-mp")
+include(":multiplatform")
+include(":frontend")

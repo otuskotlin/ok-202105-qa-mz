@@ -1,0 +1,21 @@
+.question-card {
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: lavender;
+    font-family: Arial, Verdana, sans-serif;
+    color: darkblue;
+    width: 50%;
+    margin: 20px 20px;
+    padding: 10px;
+}
+.question-card .question-title {
+    font-variant: small-caps;
+}
+.question-card .question-content {
+    margin: 5px 0 5px 0;
+    font-size: 0.75em;
+    color: grey;
+}
+.question-card .question-author {
+    font-variant: small-caps;
+}

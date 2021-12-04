@@ -26,7 +26,7 @@ Content-Type: application/json
 "processingMode": "prod",
 "question": {
 "questionId": "test-question-1",
-"title": "Main test question.",
+"title": "Main question.",
 "content": "To Ktor or not to Ktor?",
 "author": "Bill Shake",
 "language": "English",

@@ -6,6 +6,7 @@ import ru.otus.opinion.ktor.configs.AppConfig
 import ru.otus.opinion.ktor.module
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ApplicationTest {
 
@@ -16,7 +17,7 @@ class ApplicationTest {
         }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("Hello, World!", response.content)
+                assertTrue(response.content.toString().contains("<!DOCTYPE html>"))
             }
         }
     }
