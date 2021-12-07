@@ -4,7 +4,7 @@
     <title>Opinion</title>
     <meta charset="UTF-8">
     <meta name="description" content="Reveal honest people opinion.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=true">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <!-- View all Open Graph tags:  https://developers.facebook.com/docs/sharing/webmasters?locale=ru_RU  -->
     <meta property="og:title" content="Opinion service">
@@ -16,6 +16,7 @@
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="32x32">
 
+    <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/main.css">
 </head>
@@ -25,8 +26,9 @@
         <ul>
             <li><img src="winter_trees.png" alt="Logo" width="20px;" height="20px;"></li>
             <li><a href="/">Home</a></li>
-            <li><a href="question/list">View Questions</a></li>
-            <li><a href="create_question">Create Question</a></li>
+            <li><a href="/question/list">View Questions</a></li>
+            <li><a href="/create_question">Create Question</a></li>
+            <li id="login-button"><a href="/login">Login</a></li>
         </ul>
     </nav>
 </header>
@@ -38,6 +40,5 @@
 <footer>
 
 </footer>
-
 </body>
 </html>

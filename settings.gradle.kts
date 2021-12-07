@@ -37,5 +37,5 @@ include(":backend:repo:api")
 include(":backend:repo:cassandra")
 include(":backend:repo:inmemory")
 
-include(":multiplatform")
+//include(":multiplatform")
 include(":frontend")

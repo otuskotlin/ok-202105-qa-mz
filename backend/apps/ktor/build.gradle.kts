@@ -60,12 +60,24 @@ dependencies {
     // Netty engine
     implementation(ktor("server-netty"))
 
+    // support sessions
+    implementation(ktor("server-sessions"))
+
+    implementation(ktor("client-jackson"))
     implementation(ktor("jackson"))
     // Ktor own serialization
     //implementation(ktor("serialization"))
 
     implementation(ktor("freemarker"))
-    
+
+    // main HTTP client functionality
+    implementation(ktor("client-core"))
+    // dependency for the CIO network engine
+    implementation(ktor("client-cio"))
+
+    implementation(ktor("auth"))
+    implementation(ktor("auth-jwt"))
+
     // An slf4j implementation
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
