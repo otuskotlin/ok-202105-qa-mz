@@ -7,6 +7,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/question/list">View Questions</a></li>
         <li><a href="/create_question">Create Question</a></li>
+        <li id="login-button"><a href="/login">Login</a></li>
       </ul>
     </nav>
   </header>
@@ -16,22 +17,18 @@
       <notifications width='400px' ignore-duplicates="true"/>
       <form @submit="postForm" method="post">
         <label>
-          Question Title
+          Author
+          <input type="text" name="author" placeholder="Question Author" v-model="question.author">
+        </label>
+        <br> <br>
+        <label>
+          Title
           <input type="text" name="title" placeholder="Question Title" v-model="question.title">
         </label>
         <br> <br>
         Question
         <br> <br>
         <textarea rows = "20" cols="100" name="content" v-model="question.content">Question</textarea>
-        <br> <br>
-        <label>
-          Question Tags
-          <select multiple>
-            <option>Meal</option>
-            <option>Sport</option>
-            <option>Science</option>
-          </select>
-        </label>
         <br> <br>
         <button type="submit">Save</button>
       </form>
@@ -45,6 +42,7 @@ export default {
   name: "CreateQuestion",
   data() {
     const question = {
+      author: null,
       title: null,
       content: null,
     };
