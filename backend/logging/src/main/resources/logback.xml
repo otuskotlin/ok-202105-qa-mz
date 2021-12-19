@@ -1,0 +1,110 @@
+<configuration debug="true">
+
+    <!-- For ELK-Stack: Kafka log's host -->
+    <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>
+
+    <!-- For ELK-Stack: Kafka log's topic -->
+    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-logs}"/>
+
+    <!-- For log files: App name -->
+    <property name="SERVICE_NAME" value="${SERVICE_NAME:-opinion}"/>
+
+    <!-- Log level for packages "ru.otus..." -->
+    <property name="LOG_SERVICE_LEVEL" value="${LOG_SERVICE_LEVEL:-info}"/>
+
+    <!-- Log level for other packages -->
+    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-error}"/>
+
+    <!-- For %mdc view mapping diagnostic context docs: http://logback.qos.ch/manual/mdc.html -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%mdc%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- This is the kafkaAppender -->
+    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <topic>logs</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+
+        <!-- Optional parameter to use a fixed partition -->
+        <!-- <partition>0</partition> -->
+
+        <!-- Optional parameter to include log timestamps into the kafka message -->
+        <!-- <appendTimestamp>true</appendTimestamp> -->
+
+        <!-- each <producerConfig> translates to regular kafka-client config (format: key=value) -->
+        <!-- producer configs are documented here: https://kafka.apache.org/documentation.html#newproducerconfigs -->
+        <!-- bootstrap.servers is the only mandatory producerConfig -->
+        <producerConfig>
+            bootstrap.servers=${BOOTSTRAP_SERVERS}
+            <!-- All log messages that cannot be delivered fast enough will then immediately go to the fallback appenders. -->
+            block.on.buffer.full=false
+        </producerConfig>
+
+        <!-- this is the fallback appender if kafka is not available. -->
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <appender name="asyncKafkaAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- if neverBlock is set to true, the async appender discards messages when its internal queue is full -->
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="kafkaAppender" />
+    </appender>
+
+    <appender name="logstashKafka"
+              class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
+        <if condition='!property("LOGS_KAFKA_HOSTS").equals("LOGS_KAFKA_HOSTS_IS_UNDEFINED")
+                        &amp;&amp; !property("LOGS_KAFKA_HOSTS").isEmpty()'>
+            <then>
+                <appender name="kafkaVerboseAppender"
+                          class="com.github.danielwegener.logback.kafka.KafkaAppender">
+                    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                        <providers>
+                            <timestamp/>
+                            <version/>
+                            <pattern>
+                                <pattern>
+                                    {
+                                    "component": "${SERVICE_NAME}",
+                                    "container-id": "${HOSTNAME}"
+                                    }
+                                </pattern>
+                            </pattern>
+                            <message/>
+                            <loggerName/>
+                            <threadName/>
+                            <logLevel/>
+                            <logstashMarkers/>
+                            <callerData/>
+                            <stackTrace/>
+                            <context/>
+                            <mdc/>
+                            <logstashMarkers/>
+                            <arguments/>
+                            <tags/>
+                        </providers>
+                    </encoder>
+                    <topic>${LOGS_KAFKA_TOPIC}</topic>
+                    <deliveryStrategy
+                            class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
+                    <producerConfig>bootstrap.servers=${LOGS_KAFKA_HOSTS}</producerConfig>
+                </appender>
+            </then>
+        </if>
+    </appender>
+
+    <logger name="ru.otus.opinion" level="${LOG_SERVICE_LEVEL}" additivity="false">
+        <appender-ref ref="logstashKafka"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="${LOG_COMMON_LEVEL}">
+<!--        <appender-ref ref="asyncKafkaAppender" />-->
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

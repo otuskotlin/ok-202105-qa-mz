@@ -78,13 +78,15 @@ dependencies {
     implementation(ktor("auth"))
     implementation(ktor("auth-jwt"))
 
-    // An slf4j implementation
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    // An slf4j implementation, we will use our own logback wrapper from the :backend:logging module
+    //implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     implementation(project(":backend:models"))
     implementation(project(":backend:services"))
     implementation(project(":backend:transport:openapi"))
     implementation(project(":backend:transport:mapping"))
+    implementation(project(":backend:transport:log"))
+    implementation(project(":backend:logging"))
 
     // Allows to test parts of Ktor application without having to use the whole HTTP stack in the process
     testImplementation(ktor("server-test-host"))
