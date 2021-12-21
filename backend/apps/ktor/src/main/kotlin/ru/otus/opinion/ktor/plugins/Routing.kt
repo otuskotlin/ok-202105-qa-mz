@@ -56,16 +56,16 @@ fun Application.configureRouting(appConfig: AppConfig, httpClient: HttpClient) {
                 val principal: OAuthAccessTokenResponse.OAuth2? = call.principal()
                 val token = principal?.accessToken.toString()
                 call.sessions.set(UserSession(token))
-                log.info("Token")
-                log.info(token)
+//                log.info("Token")
+//                log.info(token)
                 call.respondRedirect("/welcome")
             }
         }
 
         get("/welcome") {
             val userSession: UserSession? = call.sessions.get<UserSession>()
-            log.info("UserSession token")
-            log.info(userSession?.token)
+//            log.info("UserSession token")
+//            log.info(userSession?.token)
             if (userSession != null) {
                 val userInfo: UserInfo = httpClient.get("https://www.googleapis.com/oauth2/v2/userinfo") {
                     headers {

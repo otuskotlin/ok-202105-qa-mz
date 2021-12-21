@@ -14,10 +14,9 @@ fun main(args: Array<String>): Unit =
 
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 @JvmOverloads
-fun Application.module(appConfig: AppConfig = AppConfig(environment)) {
+fun Application.module(appConfig: AppConfig = AppConfig.buildAppConfig(environment)) {
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString() ?: "8080"
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()
-    log.info("Listening http request on port {} in {} mode.", port, env)
 
     val httpClient = HttpClient(CIO) {
         install(JsonFeature) {

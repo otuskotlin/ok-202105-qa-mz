@@ -41,7 +41,7 @@ fun IRequestContext.toEmptyResponse() : EmptyResponse {
         errors = errors.map(ServerError::toTransport)
     )
 }
-private fun Question.toTransport() = QuestionTransport(
+fun Question.toTransport() = QuestionTransport(
     questionId = questionId.id,
     title = title,
     content = content,
@@ -76,7 +76,7 @@ private fun QuestionVisibility.toTransport() = when(this) {
     QuestionVisibility.PUBLIC -> Visibility.PUBLIC
 }
 
-private fun ServerError.toTransport() = TransportError(
+fun ServerError.toTransport() = TransportError(
     message = message,
     level = level.toTransport(),
     field = field,
